@@ -17,7 +17,8 @@ const Item = db.define('item', {
     type: Sequelize.FLOAT(2),
     allowNull: false,
     validate: {
-      min: 0
+      min: 0,
+      isFloat: true
     }
   },
   stock: {
