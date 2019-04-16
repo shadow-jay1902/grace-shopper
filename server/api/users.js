@@ -15,3 +15,16 @@ router.get('/', async (req, res, next) => {
     next(err)
   }
 })
+
+router.get('/current', (req, res, next) => {
+  if (req.user) {
+    const { dataValues: {
+      firstName, id, lastName, email, googleId, address, phone, dob, createdAt, updatedAt
+    } } = req.user;
+    res.send({
+      firstName, id, lastName, email, googleId, address, phone, dob, createdAt, updatedAt
+    })
+  } else {
+    res.status(403).send('Not logged in');
+  }
+})

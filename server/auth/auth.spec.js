@@ -31,8 +31,7 @@ describe.only('Login', () => {
       .end(done)
   })
 
-  it('should log in user', (done) => {
-    const info = {...codyInfo};
+  it('should log in a user', (done) => {
     agent.post('/auth/login')
       .send({
         email: codyInfo.email,
@@ -41,9 +40,16 @@ describe.only('Login', () => {
       .expect(200)
       .expect((res) => {
         expect(res.body).to.deep.equal(information);
-        // console.log(res.body);
       })
-      .end(done)
+      .end((err, res) => {
+        if (err) return done(err);
+        agent.get('/api/users/current')
+        .expect(200)
+        .expect(res => {
+          expect(res.body).to.deep.equal(information)
+        })
+        .end(done)
+      })
   })
 })
 
