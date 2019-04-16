@@ -1,32 +1,67 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
-import {logout} from '../store'
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { logout } from '../store'
 
-const Navbar = ({handleClick, isLoggedIn}) => (
-  <div>
-    <h1>BOILERMAKER</h1>
-    <nav>
-      {isLoggedIn ? (
-        <div>
-          {/* The navbar will show these links after you log in */}
-          <Link to="/home">Home</Link>
-          <a href="#" onClick={handleClick}>
-            Logout
-          </a>
+class Navbar extends Component {
+  state = {
+    menu: false
+  }
+  toggleMenu = () => {
+    this.setState({
+      menu: !this.state.menu
+    })
+  }
+  componentDidMount() {
+    console.log(this.props.match)
+  }
+  render() {
+    return <nav className="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+      <div className="navbar-brand">
+        <a className="navbar-item" href='/home'>
+          <img src="https://images.emojiterra.com/google/android-nougat/512px/1f6d2.png" />
+        </a>
+
+        <a onClick={this.toggleMenu}
+          role="button" className={`navbar-burger burger ${this.state.menu ? 'is-active' : ''}`}
+          aria-label="menu" aria-expanded="false"
+          data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div className={`navbar-menu ${this.state.menu ? 'is-active' : ''}`}>
+        <div className="navbar-end">
+          <div className="navbar-item">
+            <div className="buttons">
+              {this.props.isLoggedIn ?
+                <a onClick={this.props.handleClick} className="button is-warning">
+                  <strong>Logout</strong>
+                </a> : <>
+                  <Link to="/login" className="button is-primary">
+                    <strong>Login</strong>
+                  </Link>
+                  <Link to="/signup" className="button is-light">
+                    Sign Up
+                  </Link>
+                </>}
+            </div>
+          </div>
         </div>
-      ) : (
-        <div>
-          {/* The navbar will show these links before you log in */}
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
-        </div>
-      )}
+      </div>
+      <style jsx>{`
+      .navbar-item img{
+        transform: scale(2,2);
+        position: relative;
+        left: 1rem;
+      }
+      `}</style>
     </nav>
-    <hr />
-  </div>
-)
+  }
+}
 
 /**
  * CONTAINER
