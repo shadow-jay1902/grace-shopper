@@ -1,40 +1,42 @@
 'use strict'
 
 const db = require('../server/db')
-const { User } = require('../server/db/models')
+const { User, Item } = require('../server/db/models')
+const faker = require('faker');
 
 async function seed() {
   await db.sync({ force: true })
   console.log('db synced!')
 
-  const users = await Promise.all([
-    User.create({
-      firstName: 'Cody',
-      lastName: 'Dofy',
-      address: 'uyiuoypi;hlj',
-      phone: '123-456-7890',
-      dob: new Date(),
-      email: 'cody@puppybook.com',
-      password: 'bones'
-    }),
-    User.create({
-      firstName: 'Kenny',
-      lastName: 'Dofy',
-      address: 'ytuyjgkuhli;',
-      phone: '978-611-1212',
-      dob: new Date(),
-      email: 'kenny@puppybook.com',
-      password: 'password'
-    })
-  ])
+  const users = Array(20).fill('x').map(() => ({
+    email: faker.internet.email(),
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    password: faker.internet.password(),
+    address: faker.address.streetAddress(),
+    phone: faker.phone.phoneNumber(),
+    dob: faker.date.past()
+  }))
+
+  await User.bulkCreate(users);
+
+  const categories = ['sports', 'food', 'clothes', 'collectibles', 'hype'];
+
+  const items = Array(200).fill('x').map(() => ({
+    name: faker.commerce.productName(),
+    description: faker.lorem.sentence(),
+    price: faker.commerce.price(),
+    stock: Math.floor(Math.random() * 100),
+    category: categories[Math.floor(Math.random() * categories.length) + 1],
+    photoURLs: [faker.image.image()]
+  }))
+
+  await Item.bulkCreate(items);
 
   console.log(`seeded ${users.length} users`)
   console.log(`seeded successfully`)
 }
 
-// We've separated the `seed` function from the `runSeed` function.
-// This way we can isolate the error handling and exit trapping.
-// The `seed` function is concerned only with modifying the database.
 async function runSeed() {
   console.log('seeding...')
   try {
@@ -49,12 +51,8 @@ async function runSeed() {
   }
 }
 
-// Execute the `seed` function, IF we ran this module directly (`node seed`).
-// `Async` functions always return a promise, so we can use `catch` to handle
-// any errors that might occur inside of `seed`.
 if (module === require.main) {
   runSeed()
 }
 
-// we export the seed function for testing purposes (see `./seed.spec.js`)
 module.exports = seed
