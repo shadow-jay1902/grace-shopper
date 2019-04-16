@@ -13,7 +13,9 @@ class AuthForm extends React.Component {
   componentDidMount() {
     for (let field of this.props.fields) {
       this.setState({
-        [field.name]: null
+        errors: {
+          [field.name]: null
+        }
       })
     }
   }
