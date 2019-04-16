@@ -3,7 +3,7 @@ const { expect } = require('chai');
 const app = require('../index');
 const User = require('../db/models/user');
 const db = require('../db');
-
+const Utils = require('../testUtils')
 let agent;
 let codyInfo = {
   firstName: 'Cody',
@@ -16,44 +16,27 @@ let codyInfo = {
 };
 
 beforeEach(async () => {
-  await db.sync({force: true});
+  await db.sync({ force: true });
   agent = request.agent(app);
 })
 
-describe.only('Login', () => {
+describe('Login', () => {
   let information;
-  beforeEach(done => {
-    agent.post('/auth/signup')
-      .send(codyInfo)
-      .expect((res) => {
-        information = res.body;
-      })
-      .end(done)
+  beforeEach(async () => {
+    information = await Utils.signup(agent, codyInfo)
   })
 
-  it('should log in a user', (done) => {
-    agent.post('/auth/login')
-      .send({
-        email: codyInfo.email,
-        password: codyInfo.password
-      })
+  it('should log in a user', async () => {
+    await Utils.login(agent, codyInfo)
+    await agent.get('/auth/me')
       .expect(200)
-      .expect((res) => {
-        expect(res.body).to.deep.equal(information);
-      })
-      .end((err, res) => {
-        if (err) return done(err);
-        agent.get('/api/users/current')
-        .expect(200)
-        .expect(res => {
-          expect(res.body).to.deep.equal(information)
-        })
-        .end(done)
+      .expect(res => {
+        expect(res.body).to.deep.equal(information)
       })
   })
 })
 
-describe.skip('Signup', () => {
+describe('Signup', () => {
   const cody = {
     firstName: 'Codey',
     lastName: 'Pug',
@@ -72,5 +55,16 @@ describe.skip('Signup', () => {
         console.log(res.body)
       })
       .end(done)
+  })
+})
+describe.only('Logout', () => {
+  it('should logout a logged in user', async () => {
+    await Utils.signup(agent, codyInfo)
+    await agent.post('/auth/logout')
+      .send()
+      .expect(204)
+
+    await agent.get('/auth/me')
+      .expect(403)
   })
 })
