@@ -11,19 +11,9 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:id', async (req, res, next) => {
-  try {
-    const singleItem = await Item.findById(req.params.id)
-    res.json(singleItem)
-  } catch (error) {
-    console.log('no item')
-    next(error)
-  }
-})
-
 router.get('/category/:name', async (req, res, next) => {
   try {
-    const itemsByCat = await Item.find({
+    const itemsByCat = await Item.findAll({
       where: {
         category: req.params.name
       }
@@ -33,3 +23,37 @@ router.get('/category/:name', async (req, res, next) => {
     next(error)
   }
 })
+
+router.get('/:id', async (req, res, next) => {
+  try {
+    let ID = Number(req.params.id)
+    const singleItem = await Item.findByPk(ID)
+    res.json(singleItem)
+  } catch (error) {
+    console.log('no item')
+    next(error)
+  }
+})
+
+router.post('/', async (req, res, next) => {
+  try {
+    // console.log('REQ.BODYYYY: ', req.body)
+    await Item.create(req.body).then(item => res.status(204).json(item))
+  } catch (error) {
+    next(error)
+  }
+})
+
+// router.delete('/:id', async (req, res, next) => {
+//   try {
+//     const id = Number(req.params.id)
+//     await Item.destroy({
+//       where: {
+//         id
+//       }
+//     })
+//     res.sendStatus(202)
+//   } catch (error) {
+//     next(error)
+//   }
+// })
