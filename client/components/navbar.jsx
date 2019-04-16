@@ -13,10 +13,13 @@ class Navbar extends Component {
       menu: !this.state.menu
     })
   }
+  componentDidMount() {
+    console.log(this.props.match)
+  }
   render() {
     return <nav className="navbar is-fixed-top" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
-        <a className="navbar-item" href="https://bulma.io">
+        <a className="navbar-item" href='/home'>
           <img src="https://images.emojiterra.com/google/android-nougat/512px/1f6d2.png" />
         </a>
 
