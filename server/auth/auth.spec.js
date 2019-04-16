@@ -36,7 +36,7 @@ describe('Login', () => {
   })
 })
 
-describe('Signup', () => {
+describe.only('Signup', () => {
   const cody = {
     firstName: 'Codey',
     lastName: 'Pug',
@@ -52,19 +52,22 @@ describe('Signup', () => {
       .send(cody)
       .expect(200)
       .expect((res) => {
-        console.log(res.body)
+        for (const key in res.body) {
+          if (!cody[key] || key === 'dob') continue;
+          expect(cody[key]).to.equal(res.body[key])
+        }
       })
       .end(done)
   })
 })
-describe.only('Logout', () => {
-  it('should logout a logged in user', async () => {
-    await Utils.signup(agent, codyInfo)
-    await agent.post('/auth/logout')
-      .send()
-      .expect(204)
+// describe('Logout', () => {
+//   it('should logout a logged in user', async () => {
+//     await Utils.signup(agent, codyInfo)
+//     await agent.post('/auth/logout')
+//       .send()
+//       .expect(204)
 
-    await agent.get('/auth/me')
-      .expect(403)
-  })
-})
+//     await agent.get('/auth/me')
+//       .expect(403)
+//   })
+// })

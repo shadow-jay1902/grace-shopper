@@ -3,7 +3,6 @@ const User = require('../db/models/user')
 module.exports = router
 
 router.post('/login', async (req, res, next) => {
-  console.log(req.body);
   try {
     const user = await User.findOne({ where: { email: req.body.email } })
     if (!user) {
@@ -42,7 +41,6 @@ router.post('/logout', (req, res) => {
 })
 
 router.get('/me', (req, res) => {
-  console.log(req.session)
   if (req.user) {
     const { dataValues: {
       firstName, id, lastName, email, googleId, address, phone, dob, createdAt, updatedAt
