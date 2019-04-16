@@ -36,7 +36,7 @@ describe('Login', () => {
   })
 })
 
-describe.only('Signup', () => {
+describe('Signup', () => {
   const cody = {
     firstName: 'Codey',
     lastName: 'Pug',
@@ -60,6 +60,7 @@ describe.only('Signup', () => {
       .end(done)
   })
 })
+
 // describe('Logout', () => {
 //   it('should logout a logged in user', async () => {
 //     await Utils.signup(agent, codyInfo)

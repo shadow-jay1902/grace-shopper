@@ -38,13 +38,11 @@ const itemsArray = [
 
 describe('Item routes', () => {
   beforeEach(async () => {
-    await db.sync({force: true})
+    await db.sync({force: true});
+    await Item.bulkCreate(itemsArray);
   })
 
   describe('/api/items', () => {
-    beforeEach(async () => {
-      await Item.bulkCreate(itemsArray)
-    })
     it('should respond with an array via JSON', async () => {
       const res = await agent
         .get('/api/items')
@@ -57,9 +55,6 @@ describe('Item routes', () => {
   })
 
   describe('/api/items/:id', () => {
-    beforeEach(async () => {
-      await Item.bulkCreate(itemsArray)
-    })
     it('should respond with a single item', async () => {
       const res = await agent
         .get('/api/items/1')
@@ -71,9 +66,6 @@ describe('Item routes', () => {
   })
 
   describe('/api/items/category/:name', () => {
-    beforeEach(async () => {
-      await Item.bulkCreate(itemsArray)
-    })
     it('should respond with items by category', async () => {
       const res = await agent
         .get('/api/items/category/music')
