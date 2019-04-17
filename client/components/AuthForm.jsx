@@ -1,7 +1,7 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
-import { login, signup } from '../store'
+import {login, signup} from '../store'
 
 /**
  * COMPONENT
@@ -19,16 +19,19 @@ class AuthForm extends React.Component {
       })
     }
   }
-  formSubmit = (e) => {
-    e.preventDefault();
+  formSubmit = e => {
+    e.preventDefault()
     let flag = false
     const values = {}
     for (let field of this.props.fields) {
-      const { value } = e.target[field.name]
+      const {value} = e.target[field.name]
       if (!value) {
         flag = true
         this.setState({
-          errors: { ...this.state.errors, [field.name]: { exists: true, message: 'Please enter ' + field.name } }
+          errors: {
+            ...this.state.errors,
+            [field.name]: {exists: true, message: 'Please enter ' + field.name}
+          }
         })
       } else {
         values[field.name] = value
@@ -37,52 +40,70 @@ class AuthForm extends React.Component {
     if (flag) return true
     this.props.handleSubmit(values)
   }
-  renderInput = (name, type = 'text') => {
-    return <div className="field">
-      <label className="label has-text-centered">
-        <small>{name === 'firstName' ? 'first name' : name === 'lastName' ? 'last name' : name}</small>
-      </label>
-      <div className="control">
-        <input className="input" name={name} type={type}
-          onChange={() => this.setState({
-            errors: { ...this.state.errors, [name]: null }
-          })} />
-        <p className="help has-text-danger">{this.state.errors[name] && this.state.errors[name].message}</p>
+  renderInput = (name, type = 'text', i) => {
+    return (
+      <div key={i} className="field">
+        <label className="label has-text-centered">
+          <small>
+            {name === 'firstName'
+              ? 'first name'
+              : name === 'lastName' ? 'last name' : name}
+          </small>
+        </label>
+        <div className="control">
+          <input
+            className="input"
+            name={name}
+            type={type}
+            onChange={() =>
+              this.setState({
+                errors: {...this.state.errors, [name]: null}
+              })
+            }
+          />
+          <p className="help has-text-danger">
+            {this.state.errors[name] && this.state.errors[name].message}
+          </p>
+        </div>
       </div>
-    </div>
+    )
   }
   render() {
-    const { formName, displayName, error, fields } = this.props
-    return <div className="columns is-centered">
-      <div className="column has-text-centered is-one-third">
-        <h1 className="title is-3" >{displayName}</h1>
-        <form className="form " onSubmit={this.formSubmit} name={formName}>
-          {error && error.response && <article className="message is-danger">
-            <div className="message-header">`
-              <button className="delete" aria-label="delete"></button>
+    const {formName, displayName, error, fields} = this.props
+    return (
+      <div className="columns is-centered">
+        <div className="column has-text-centered is-one-third">
+          <h1 className="title is-3">{displayName}</h1>
+          <form className="form " onSubmit={this.formSubmit} name={formName}>
+            {error &&
+              error.response && (
+                <article className="message is-danger">
+                  <div className="message-header">
+                    `
+                    <button className="delete" aria-label="delete" />
+                  </div>
+                  <div className="message-body">{error.response.data}</div>
+                </article>
+              )}
+            {fields.map(({name, type}, i) => {
+              return this.renderInput(name, type, i)
+            })}
+            <div>
+              <button className="button is-success" type="submit">
+                {displayName}
+              </button>
             </div>
-            <div className="message-body">
-              {error.response.data}
-            </div>
-          </article>}
-          {fields.map(({ name, type }) => {
-            return this.renderInput(name, type)
-          })}
-          <div>
-            <button className="button is-success" type="submit">{displayName}</button>
-          </div>
-
-        </form>
-        {formName === 'login' && <a href="/auth/google">Login with Google</a>}
-      </div>
-      <style jsx>{`
-        .column{
-          margin-top: 3rem;
-        }
+          </form>
+          {formName === 'login' && <a href="/auth/google">Login with Google</a>}
+        </div>
+        <style jsx>{`
+          .column {
+            margin-top: 3rem;
+          }
         `}</style>
-    </div>
+      </div>
+    )
   }
-
 }
 
 /**
@@ -105,7 +126,7 @@ const mapLogin = state => {
       {
         name: 'password',
         type: 'password'
-      },
+      }
     ]
   }
 }
@@ -124,10 +145,10 @@ const mapSignup = state => {
         type: 'password'
       },
       {
-        name: 'firstName',
+        name: 'firstName'
       },
       {
-        name: 'lastName',
+        name: 'lastName'
       },
       {
         name: 'address'
@@ -143,7 +164,6 @@ const mapSignup = state => {
     ]
   }
 }
-
 
 const mapDispatchLogin = dispatch => {
   return {
