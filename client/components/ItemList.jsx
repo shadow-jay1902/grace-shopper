@@ -1,6 +1,6 @@
 import React from 'react'
-import {connect} from 'react-redux'
-import {getAllItems, getItemsByCat} from '../store/item'
+import { connect } from 'react-redux'
+import { getAllItems, getItemsByCat } from '../store/item'
 import ItemThumbnail from './ItemThumbnail'
 
 class List extends React.Component {
@@ -25,7 +25,7 @@ class List extends React.Component {
   // }
 
   render() {
-    const {list} = this.props
+    const { list } = this.props
     return (
       <div>
         <div className="title is-2 has-text-centered">LIST OF ITEMS</div>
