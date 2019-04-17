@@ -19,4 +19,5 @@ const Order = db.define('order', {
 Order.beforeCreate((order) => {
     if (order.userId) order.guestId = null;
 })
+
 module.exports = Order

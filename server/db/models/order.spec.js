@@ -4,11 +4,9 @@ const { Item, Order, OrderItem, User } = require('./')
 
 let baseball;
 let kenny;
-let order;
 let tennis;
 
-
-describe.only('Order Model', () => {
+describe('Order Model', () => {
     beforeEach(async () => {
         await db.sync({ force: true })
 
@@ -43,10 +41,21 @@ describe.only('Order Model', () => {
         })
     })
     it('Should create an empty order', async () => {
-
         const newOrder = await Order.create()
         await newOrder.setUser(kenny)
         expect(newOrder.dataValues.userId).to.equal(kenny.dataValues.id)
+    })
+    it('Should add an item with a default quantity of 1', async() => {
+      const newOrder = await Order.create()
+        await newOrder.setUser(kenny)
+        await newOrder.addItem(baseball)
+        const theOrder = await OrderItem.findAll({
+          where: {
+            orderId: newOrder.dataValues.id
+          }
+        })
+        expect(theOrder[0].dataValues.itemId).to.equal(1)
+        expect(theOrder[0].dataValues.quantity).to.equal(1)
     })
     it('Should create an order with items', async () => {
         const newOrder = await Order.create()
