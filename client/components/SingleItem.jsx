@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {getSelectItem} from '../store/item'
+import history from '../history'
 
 class Item extends React.Component {
   componentDidMount() {
@@ -10,13 +11,58 @@ class Item extends React.Component {
   render() {
     const {item} = this.props
     return (
-      <div>
-        <h1 className="title is-1">{item.name}</h1>
-        <img src={item.photoURLs && item.photoURLs[0]} />
-        <p>{item.description}</p>
-        <div>${item.price}</div>
-        <div>Category: {item.category}</div>
-        <button>ADD TO CART</button>
+      <div className="columns is-centered">
+        <div className="column is-one-third container">
+          <div className="card">
+            <h1 className="title is-1 has-text-centered">{item.name}</h1>
+            <div className="columns is-centered">
+              <div className="column is-10">
+                <figure className="image is-4by3">
+                  <img src={item.photoURLs && item.photoURLs[0]} />
+                </figure>
+              </div>
+            </div>
+            <div className="columns is-multiline is-vcentered">
+              <div className="column is-three-fifths">
+                <p>{item.description}</p>
+              </div>
+              <div className="column is-one-fifth">
+                <button className="button is-small is-info is-rounded">
+                  ADD TO CART
+                </button>
+              </div>
+              <div className="column has-text-centered is-half">
+                <div className="is-large is-success is-size-5">
+                  <strong>${item.price}</strong>
+                </div>
+              </div>
+              <div className="column has-text-centered is-half">
+                <strong>Category:</strong>
+                <br />
+                <div className="tag is-rounded has-text-weight-bold is-danger">
+                  {item.category}
+                </div>
+              </div>
+            </div>
+          </div>
+          <button
+            className="button backButton is-medium is-primary"
+            onClick={() => history.push('/items')}
+          >
+            Back
+          </button>
+        </div>
+        <style jsx>{`
+          .container {
+            margin-top: 3rem;
+          }
+          .card {
+            padding: 1rem;
+          }
+          .backButton {
+            margin-top: 1rem;
+          }
+        `}</style>
       </div>
     )
   }
