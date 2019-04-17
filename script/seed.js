@@ -20,7 +20,7 @@ async function seed() {
 
   await User.bulkCreate(users);
 
-  const categories = ['sports', 'food', 'clothes', 'collectibles', 'hype'];
+  const categories = ['sports', 'food', 'clothes', 'collectables', 'hype'];
 
   const items = Array(200).fill('x').map(() => ({
     name: faker.commerce.productName(),
