@@ -1,13 +1,13 @@
 /* global describe beforeEach it */
 
-const {expect} = require('chai')
+const { expect } = require('chai')
 const db = require('../index')
 const Item = db.model('item')
 
 beforeEach(() => {
-  return db.sync({force: true})
+  return db.sync({ force: true })
 })
-describe.only('Item model', () => {
+describe('Item model', () => {
   describe('instanceMethods', () => {
     describe('good instance', () => {
       let baseball
@@ -24,7 +24,7 @@ describe.only('Item model', () => {
       })
 
       it('successfully creates a new item with valid input', async () => {
-        let retrievedItem = await Item.findOne({where: {name: 'baseball'}})
+        let retrievedItem = await Item.findOne({ where: { name: 'baseball' } })
         expect(retrievedItem.name).to.equal(baseball.name)
         expect(retrievedItem.description).to.equal(baseball.description)
         expect(retrievedItem.price).to.equal(baseball.price)
@@ -98,12 +98,12 @@ describe.only('Item model', () => {
         photoURLs: ['https://en.wikipedia.org/wiki/File:Baseball_(crop).jpg']
       }
       await Item.create(baseballWOCat)
-      let retrievedItem = await Item.findOne({where: {name: 'baseball'}})
+      let retrievedItem = await Item.findOne({ where: { name: 'baseball' } })
       expect(retrievedItem.category).to.equal('miscellaneous')
     })
     it('Should set photos passed in within photoURLs property', async () => {
       await Item.create(baseball)
-      let retrievedItem = await Item.findOne({where: {name: 'baseball'}})
+      let retrievedItem = await Item.findOne({ where: { name: 'baseball' } })
       expect(retrievedItem.photoURLs[0]).to.equal('https://en.wikipedia.org/wiki/File:Baseball_(crop).jpg')
     })
     //Later on, we should make a test to confirm sellerID belongs to an exitsing seller
