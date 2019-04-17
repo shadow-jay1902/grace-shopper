@@ -10,32 +10,42 @@ const SET_ITEM_LIST = 'SET_ITEM_LIST'
 /**
  * INITIAL STATE
  */
-const initialState = {
-  item: {},
-  itemList: []
-}
+
+
+const defaultItem = {}
+const defaultList = []
 
 /**
  * ACTION CREATORS
  */
 const setSelectItem = item => ({type: SET_SELECT_ITEM, item})
-const setItemList = itemList => ({type: SET_ITEM_LIST, itemList})
+const setItemList = list => ({type: SET_ITEM_LIST, list})
 
 /**
  * THUNK CREATORS
  */
-export const getSelectItem = item => async dispatch => {
+export const getSelectItem = id => async dispatch => {
   try {
-    const res = await axios.get(`/api/items/${item.id}`)
+    console.log("Start of thunk. Item")
+    const res = await axios.get(`/api/items/${id}`)
     dispatch(setSelectItem(res.data))
   } catch (err) {
     console.error(err)
   }
 }
 
-export const getItemList = () => async dispatch => {
+export const getAllItems = () => async dispatch => {
   try {
     const res = await axios.get(`/api/items/`)
+    dispatch(setItemList(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const getItemsByCat = cat => async dispatch => {
+  try {
+    const res = await axios.get(`/api/items/category/${cat}`)
     dispatch(setItemList(res.data))
   } catch (err) {
     console.error(err)
@@ -45,12 +55,20 @@ export const getItemList = () => async dispatch => {
 /**
  * REDUCER
  */
-export default function(state = initialState, action) {
+
+export const singleItemReducer = function(state = defaultItem, action) {
   switch (action.type) {
     case SET_SELECT_ITEM:
-      return {...state, item: action.item}
+      return action.item
+    default:
+      return state
+  }
+}
+
+export const itemListReducer = function(state = defaultList, action) {
+  switch (action.type) {
     case SET_ITEM_LIST:
-      return {...state, itemList: [...action.itemList]}
+      return action.list
     default:
       return state
   }
