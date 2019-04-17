@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {getAllItems, getItemsByCat} from '../store/item'
-import {ItemThumbnail} from './ItemThumbnail'
+import ItemThumbnail from './ItemThumbnail'
 
 class List extends React.Component {
   componentDidMount() {

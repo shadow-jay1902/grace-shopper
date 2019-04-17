@@ -14,11 +14,10 @@ const Item = db.define('item', {
     allowNull: false
   },
   price: {
-    type: Sequelize.FLOAT(2),
+    type: Sequelize.FLOAT,
     allowNull: false,
     validate: {
-      min: 0,
-      isFloat: true
+      min: 0
     }
   },
   stock: {
@@ -34,9 +33,6 @@ const Item = db.define('item', {
   },
   photoURLs: {
     type: Sequelize.ARRAY(Sequelize.STRING)
-  },
-  sellerID: {
-    type: Sequelize.INTEGER
   }
 })
 
@@ -47,5 +43,11 @@ Item.beforeValidate(item => {
     ]
   }
 })
+
+// Item.beforeCreate(item => {
+//   if (typeof item.price === 'number') {
+//     item.price = item.price * 100
+//   }
+// })
 
 module.exports = Item
