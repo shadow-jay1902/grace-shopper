@@ -7,7 +7,7 @@ const Item = db.model('item')
 beforeEach(() => {
   return db.sync({force: true})
 })
-describe('Item model', () => {
+describe.only('Item model', () => {
   describe('instanceMethods', () => {
     describe('good instance', () => {
       let baseball
@@ -71,7 +71,7 @@ describe('Item model', () => {
         .then(() => done(new Error('Bad Item created')))
         .catch(() => done())
     })
-    it('Should not allow a price that null', done => {
+    it.only('Should not allow a price that null', done => {
       baseball.price = null
       Item.create(baseball)
         .then(() => done(new Error('Bad Item created')))
