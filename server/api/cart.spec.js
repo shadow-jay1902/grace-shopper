@@ -58,7 +58,7 @@ describe.only('Order routes', () => {
         await db.sync({ force: true });
         agent = request.agent(app);
     })
-    describe('GET active cart', () => {
+    describe.only('GET active cart', () => {
         it('Should return an active cart for the logged in user', async () => {
             const user = await Utils.signup(agent, codyInfo)
             const { body } = await agent.get('/api/cart')

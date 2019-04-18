@@ -27,7 +27,7 @@ async function seed() {
     description: faker.lorem.sentence(),
     price: faker.commerce.price() / 100,
     stock: Math.floor(Math.random() * 100),
-    category: categories[Math.floor(Math.random() * categories.length) + 1],
+    category: categories[Math.floor(Math.random() * categories.length)],
     photoURLs: [faker.image.image()]
   }))
 
