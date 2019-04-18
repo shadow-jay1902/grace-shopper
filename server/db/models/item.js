@@ -14,10 +14,17 @@ const Item = db.define('item', {
     allowNull: false
   },
   price: {
-    type: Sequelize.FLOAT,
+    type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
       min: 0
+    },
+    get(){
+      const price = this.getDataValue('price');
+      return (price / 100)
+    },
+    set(value){
+      this.setDataValue('price', (value * 100))
     }
   },
   stock: {
