@@ -19,12 +19,14 @@ const Item = db.define('item', {
     validate: {
       min: 0
     },
-    get(){
-      const price = this.getDataValue('price');
-      return (price / 100)
+    get() {
+      const price = this.getDataValue('price')
+      return price / 100
     },
-    set(value){
-      this.setDataValue('price', (value * 100))
+    set(value) {
+      if (!isNaN(value) && value > 0) {
+        this.setDataValue('price', value * 100)
+      }
     }
   },
   stock: {
@@ -50,11 +52,5 @@ Item.beforeValidate(item => {
     ]
   }
 })
-
-// Item.beforeCreate(item => {
-//   if (typeof item.price === 'number') {
-//     item.price = item.price * 100
-//   }
-// })
 
 module.exports = Item

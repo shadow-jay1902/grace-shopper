@@ -71,7 +71,7 @@ describe('Item model', () => {
         .then(() => done(new Error('Bad Item created')))
         .catch(() => done())
     })
-    it.only('Should not allow a price that null', done => {
+    it('Should not allow a price that null', done => {
       baseball.price = null
       Item.create(baseball)
         .then(() => done(new Error('Bad Item created')))

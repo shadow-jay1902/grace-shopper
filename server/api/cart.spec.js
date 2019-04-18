@@ -58,13 +58,15 @@ describe.only('Order routes', () => {
         await db.sync({ force: true });
         agent = request.agent(app);
     })
-    describe.only('GET active cart', () => {
+    describe('GET active cart', () => {
         it('Should return an active cart for the logged in user', async () => {
             const user = await Utils.signup(agent, codyInfo)
             const { body } = await agent.get('/api/cart')
                 .expect(200)
             Utils.expectCart(body, 'user', user.id)
             expect(body.items).to.deep.equal([])
+            await agent.get('/api/cart')
+                .expect(200)
         })
         it('Should return an active cart for a guest', async () => {
             const { body } = await agent.get('/api/cart')
