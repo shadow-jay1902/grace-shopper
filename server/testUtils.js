@@ -1,3 +1,4 @@
+const { expect } = require('chai')
 const login = (agent, info) => {
     return new Promise((resolve, reject) => {
         agent.post('/auth/login')
@@ -21,4 +22,52 @@ const signup = (agent, info) => {
             })
     })
 }
-module.exports = { login, signup }
+const getCart = (agent) => {
+    return new Promise((resolve, reject) => {
+        agent.get('/api/cart')
+            .end((err, res) => {
+                if (err) return reject(err)
+                resolve(res.body)
+            })
+    })
+}
+const addToCart = (agent, data) => {
+    return new Promise((resolve, reject) => {
+        const { body } = await agent.post('/api/cart')
+            .send(data)
+            .end((err, res) => {
+                if (err) return reject(err)
+                resolve(res.body)
+            })
+    })
+}
+const removeFromCart = (agent, itemId) => {
+    return new Promise((resolve, reject) => {
+        const { body } = await agent.delete('/api/cart' + itemId)
+            .end((err, res) => {
+                if (err) return reject(err)
+                resolve()
+            })
+    })
+}
+const updateItemInCart = (agent, data) => {
+    return new Promise((resolve, reject) => {
+        const { body } = await agent.put('/api/cart')
+            .send(data)
+            .end((err, res) => {
+                if (err) return reject(err)
+                resolve(res.body)
+            })
+    })
+}
+const expectCart = (body, type = 'guest', id = null) => {
+    if (type === 'user') {
+        expect(body.guestId).to.equal(null)
+    } else {
+        expect(typeof body.guestId).to.equal('string')
+    }
+    expect(body.userId).to.equal(id)
+    expect(body.received).to.equal(null)
+    expect(body.ordered).to.equal(false)
+}
+module.exports = { login, signup, getCart, addToCart, removeFromCart, updateItemInCart, expectCart }
