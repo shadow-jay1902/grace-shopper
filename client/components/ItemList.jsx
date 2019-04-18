@@ -7,9 +7,6 @@ import history from '../history'
 class List extends React.Component {
   constructor() {
     super()
-    // this.state = {
-    //   category: 'all'
-    // }
   }
   componentDidMount() {
     this.props.loadAllItems()
