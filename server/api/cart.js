@@ -8,7 +8,6 @@ router.get('/', async (req, res, next) => {
   try {
     if (req.user) {
       const sessionId = req.session.id
-
       const {dataValues: {id}} = req.user
       let order = await Order.findOne({
         where: {
@@ -65,6 +64,39 @@ router.get('/', async (req, res, next) => {
         cart.items = []
       }
       res.json(cart)
+    }
+  } catch (error) {
+    next(error)
+  }
+})
+
+
+router.post('/', async (req, res, next) => {
+  try {
+    if (req.user) {
+      const {dataValues: {id}} = req.user
+      const order = await Order.findOne({
+        where: {
+          userId: id,
+          ordered: false
+        }
+      })
+      const orderId = order.id
+      req.body.orderId = orderId
+      const newOrderItem = await OrderItem.create(req.body)
+      res.status(201).json(newOrderItem)
+    } else {
+      const sessionId = req.session.id
+      const order = await Order.findOne({
+        where: {
+          guestId: sessionId,
+          ordered: false
+        }
+      })
+      const orderId = order.id
+      req.body.orderId = orderId
+      const newOrderItem = await OrderItem.create(req.body)
+      res.status(201).json(newOrderItem)
     }
   } catch (error) {
     next(error)
