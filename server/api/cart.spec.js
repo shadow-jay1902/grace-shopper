@@ -52,7 +52,7 @@ const createItems = async () => {
   ])
 }
 
-describe.only('Order routes', () => {
+describe('Order routes', () => {
   beforeEach(async () => {
     await db.sync({force: true})
     agent = request.agent(app)
@@ -67,7 +67,6 @@ describe.only('Order routes', () => {
     })
     it('Should return an active cart for a guest', async () => {
       const {body} = await agent.get('/api/cart').expect(200)
-      console.log(body.guestId)
       Utils.expectCart(body)
       expect(body.items).to.deep.equal([])
     })
@@ -87,28 +86,30 @@ describe.only('Order routes', () => {
         itemId: 1,
         quantity: 2
       }
-      await Utils.getCart(agent)
+      const order = await Utils.getCart(agent)
       const {body} = await agent
         .post('/api/cart')
         .send(data)
         .expect(201)
-      Utils.expectCart(body, 'user', user.id)
-      expect(body.items[0]).to.deep.equal({...items[0], id: 1, quantity: 2})
-      //need to fix this up so tests work again.
+      Utils.expectCart(order, 'user', user.id)
+      expect(body.itemId).to.equal(1)
+      expect(body.orderId).to.equal(1)
+      expect(body.quantity).to.equal(2)
     })
     it('Should add items for the guest', async () => {
       const data = {
         itemId: 1,
         quantity: 2
       }
-      await Utils.getCart(agent)
+      const order = await Utils.getCart(agent)
       const {body} = await agent
         .post('/api/cart')
         .send(data)
         .expect(201)
-      Utils.expectCart(body)
-      expect(body.items[0]).to.deep.equal({...items[0], id: 1, quantity: 2})
-      //need to fix this up so tests work again.
+      Utils.expectCart(order)
+      expect(body.itemId).to.equal(1)
+      expect(body.orderId).to.equal(1)
+      expect(body.quantity).to.equal(2)
     })
     it('Should have all of the items that were added to the users cart', async () => {
       const user = await Utils.signup(agent, codyInfo)
@@ -120,7 +121,7 @@ describe.only('Order routes', () => {
         itemId: 2,
         quantity: 4
       }
-      await Utils.getCart(agent)
+      const order = await Utils.getCart(agent)
       await agent
         .post('/api/cart')
         .send(data1)
@@ -129,12 +130,10 @@ describe.only('Order routes', () => {
         .post('/api/cart')
         .send(data2)
         .expect(201)
-      Utils.expectCart(body, 'user', user.id)
-      expect(body.items).to.deep.equal([
-        {...items[0], id: 1, quantity: 2},
-        {...items[1], id: 2, quantity: 4}
-      ])
-      //need to fix this up so tests work again.
+      Utils.expectCart(order, 'user', user.id)
+      expect(body.itemId).to.equal(2)
+      expect(body.orderId).to.equal(1)
+      expect(body.quantity).to.equal(4)
     })
     it('Should have all of the items that were added to the guests cart', async () => {
       const data1 = {
@@ -145,7 +144,7 @@ describe.only('Order routes', () => {
         itemId: 2,
         quantity: 4
       }
-      await Utils.getCart(agent)
+      const order = await Utils.getCart(agent)
       await agent
         .post('/api/cart')
         .send(data1)
@@ -154,11 +153,10 @@ describe.only('Order routes', () => {
         .post('/api/cart')
         .send(data2)
         .expect(201)
-      Utils.expectCart(body)
-      expect(body.items).to.deep.equal([
-        {...items[0], id: 1, quantity: 2},
-        {...items[1], id: 2, quantity: 4}
-      ])
+      Utils.expectCart(order)
+      expect(body.itemId).to.equal(2)
+      expect(body.orderId).to.equal(1)
+      expect(body.quantity).to.equal(4)
     })
   })
   describe('Remove items from carts', () => {

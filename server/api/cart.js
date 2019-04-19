@@ -8,6 +8,7 @@ router.get('/', async (req, res, next) => {
   try {
     if (req.user) {
       const sessionId = req.session.id
+      //req.session.id is the main issue for guests...
       const {dataValues: {id}} = req.user
       let order = await Order.findOne({
         where: {
@@ -37,7 +38,6 @@ router.get('/', async (req, res, next) => {
       if (cart.items) {
         cart.items = cart.items.map(item => {
           const newItem = item.dataValues
-          newItem.quantity = newItem.order_item.dataValues.quantity
           return newItem
         })
       } else {
@@ -57,7 +57,6 @@ router.get('/', async (req, res, next) => {
       if (cart.items) {
         cart.items = cart.items.map(item => {
           const newItem = item.dataValues
-          newItem.quantity = newItem.order_item.dataValues.quantity
           return newItem
         })
       } else {
@@ -70,11 +69,10 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-
 router.post('/', async (req, res, next) => {
   try {
     if (req.user) {
-      const {dataValues: {id}} = req.user
+      const {id} = req.user
       const order = await Order.findOne({
         where: {
           userId: id,
@@ -86,6 +84,7 @@ router.post('/', async (req, res, next) => {
       const newOrderItem = await OrderItem.create(req.body)
       res.status(201).json(newOrderItem)
     } else {
+      //The below is for guest posting. This will need to be modified...
       const sessionId = req.session.id
       const order = await Order.findOne({
         where: {
@@ -93,10 +92,16 @@ router.post('/', async (req, res, next) => {
           ordered: false
         }
       })
-      const orderId = order.id
-      req.body.orderId = orderId
-      const newOrderItem = await OrderItem.create(req.body)
-      res.status(201).json(newOrderItem)
+      if (order) {
+        const orderId = order.id
+        req.body.orderId = orderId
+        const newOrderItem = await OrderItem.create(req.body)
+        res.status(201).json(newOrderItem)
+      } else {
+        console.log(
+          'Guest post request still not able to find persistent session...'
+        )
+      }
     }
   } catch (error) {
     next(error)
