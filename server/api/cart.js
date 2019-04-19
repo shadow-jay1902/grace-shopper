@@ -128,8 +128,7 @@ router.delete('/:itemId', async (req, res, next) => {
         }
       })
       res.sendStatus(204)
-    }
-    else {
+    } else {
       res.sendStatus(204)
     }
   } catch (error) {
@@ -137,4 +136,33 @@ router.delete('/:itemId', async (req, res, next) => {
   }
 })
 
-
+router.put('/', async (req, res, next) => {
+  try {
+    if (req.user) {
+      const {dataValues: {id}} = req.user
+      let order = await Order.findOne({
+        where: {
+          userId: id,
+          ordered: false
+        },
+        include: [{model: Item}]
+      })
+      await OrderItem.update(
+        {
+          quantity: req.body.quantity
+        },
+        {
+          where: {
+            orderId: order.id,
+            itemId: req.body.itemId
+          }
+        }
+      )
+      res.sendStatus(201)
+    } else {
+      res.sendStatus(201)
+    }
+  } catch (error) {
+    next(error)
+  }
+})
