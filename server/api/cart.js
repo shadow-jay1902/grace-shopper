@@ -109,3 +109,32 @@ router.post('/', async (req, res, next) => {
     next(error)
   }
 })
+
+router.delete('/:itemId', async (req, res, next) => {
+  try {
+    if (req.user) {
+      const {dataValues: {id}} = req.user
+      let order = await Order.findOne({
+        where: {
+          userId: id,
+          ordered: false
+        },
+        include: [{model: Item}]
+      })
+      await OrderItem.destroy({
+        where: {
+          orderId: order.id,
+          itemId: req.params.itemId
+        }
+      })
+      res.sendStatus(204)
+    }
+    else {
+      res.sendStatus(204)
+    }
+  } catch (error) {
+    next(error)
+  }
+})
+
+
