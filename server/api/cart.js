@@ -38,6 +38,8 @@ router.get('/', async (req, res, next) => {
       if (cart.items) {
         cart.items = cart.items.map(item => {
           const newItem = item.dataValues
+          // newItem.quantity = newItem.order_item.dataValues.quantity
+          //the above line duplicates the quantity field if you look at the API structure, so I don't think it's necessary. But I'll keep it here in case we need it in a different spot for some reason.
           return newItem
         })
       } else {
