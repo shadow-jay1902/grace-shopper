@@ -211,7 +211,7 @@ describe('Order routes', () => {
       expect(body.items).to.deep.equal([{...items[0], id: 1, quantity: 2}])
     })
   })
-  describe.only('Update cart', () => {
+  describe('Update cart', () => {
     beforeEach(createItems)
     it('Should update the quatity of items in a users cart', async () => {
       const user = await Utils.signup(agent, codyInfo)
@@ -225,17 +225,20 @@ describe('Order routes', () => {
       }
       await Utils.getCart(agent)
       await agent
-      .post('/api/cart')
-      .send(data1)
-      .expect(201)
+        .post('/api/cart')
+        .send(data1)
+        .expect(201)
       await agent
-      .post('/api/cart')
-      .send(data2)
-      .expect(201)
-      await agent.put('/api/cart').send({
-        itemId: 1,
-        quantity: 5
-      }).expect(201)
+        .post('/api/cart')
+        .send(data2)
+        .expect(201)
+      await agent
+        .put('/api/cart')
+        .send({
+          itemId: 1,
+          quantity: 5
+        })
+        .expect(201)
       const order = await Utils.getCart(agent)
       Utils.expectCart(order, 'user', user.id)
       expect(order.items[0].quantity).to.equal(5)
@@ -267,6 +270,25 @@ describe('Order routes', () => {
         {...items[0], id: 1, quantity: 5},
         {...items[1], id: 2, quantity: 4}
       ])
+    })
+  })
+  describe('Checkout', () => {
+    beforeEach(createItems)
+    it('Should checkout a users cart', async () => {
+      const user = await Utils.signup(agent, codyInfo)
+      const data1 = {
+        itemId: 1,
+        quantity: 2
+      }
+      const data2 = {
+        itemId: 2,
+        quantity: 4
+      }
+      await Utils.getCart(agent)
+      await agent.post('/api/cart').send(data1)
+      await agent.post('/api/cart').send(data2)
+      const {body} = await agent.put('/api/cart/checkout').expect(201)
+      Utils.expectCart(body, 'user', user.id, true)
     })
   })
 })

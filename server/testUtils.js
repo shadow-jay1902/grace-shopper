@@ -63,7 +63,7 @@ const updateItemInCart = (agent, data) => {
       })
   })
 }
-const expectCart = (body, type = 'guest', id = null) => {
+const expectCart = (body, type = 'guest', id = null, ordered = false) => {
   if (type === 'user') {
     expect(body.guestId).to.equal(null)
   } else {
@@ -71,7 +71,7 @@ const expectCart = (body, type = 'guest', id = null) => {
   }
   expect(body.userId).to.equal(id)
   expect(body.received).to.equal(null)
-  expect(body.ordered).to.equal(false)
+  expect(body.ordered).to.equal(ordered)
 }
 module.exports = {
   login,
