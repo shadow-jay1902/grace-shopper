@@ -109,3 +109,97 @@ router.post('/', async (req, res, next) => {
     next(error)
   }
 })
+
+router.delete('/:itemId', async (req, res, next) => {
+  try {
+    if (req.user) {
+      const {dataValues: {id}} = req.user
+      let order = await Order.findOne({
+        where: {
+          userId: id,
+          ordered: false
+        },
+        include: [{model: Item}]
+      })
+      await OrderItem.destroy({
+        where: {
+          orderId: order.id,
+          itemId: req.params.itemId
+        }
+      })
+      res.sendStatus(204)
+    } else {
+      res.sendStatus(204)
+    }
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.put('/', async (req, res, next) => {
+  try {
+    if (req.user) {
+      const {dataValues: {id}} = req.user
+      let order = await Order.findOne({
+        where: {
+          userId: id,
+          ordered: false
+        },
+        include: [{model: Item}]
+      })
+      await OrderItem.update(
+        {
+          quantity: req.body.quantity
+        },
+        {
+          where: {
+            orderId: order.id,
+            itemId: req.body.itemId
+          }
+        }
+      )
+      res.sendStatus(201)
+    } else {
+      res.sendStatus(201)
+    }
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.put('/checkout', async (req, res, next) => {
+  try {
+    if (req.user) {
+      const {dataValues: {id}} = req.user
+      const [,[updatedOrder]] = await Order.update(
+        {
+          ordered: true
+        },
+        {
+          where: {
+            userId: id,
+            ordered: false
+          }, returning: true
+        }
+      )
+      let order = await Order.findOne({
+        where: {
+          id: updatedOrder.id,
+          ordered: true
+        },
+        include: [{model: Item}]
+      })
+      const cart = order.dataValues
+      cart.items = cart.items.map(item => {
+        const newItem = item.dataValues
+        newItem.quantity = newItem.order_item.dataValues.quantity
+        return newItem
+      })
+      res.status(201).send(cart)
+    } else {
+      res.sendStatus(201)
+    }
+  } catch (error) {
+    next(error)
+  }
+})
