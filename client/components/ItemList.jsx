@@ -1,6 +1,6 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { getAllItems, getItemsByCat } from '../store/item'
+import {connect} from 'react-redux'
+import {getAllItems, getItemsByCat} from '../store/item'
 import ItemThumbnail from './ItemThumbnail'
 import history from '../history'
 
@@ -30,7 +30,7 @@ class List extends React.Component {
   }
 
   render() {
-    const { list } = this.props
+    const {list} = this.props
     return (
       <div>
         <div className="title is-2 has-text-centered">LIST OF ITEMS</div>
@@ -46,6 +46,32 @@ class List extends React.Component {
               All Items{' '}
             </label>
             <label className="radio">
+              <input type="radio" name="category" value="javascript" /> JavaScript{' '}
+            </label>
+            <label className="radio">
+              <input type="radio" name="category" value="debugging" /> Debugging{' '}
+            </label>
+            <label className="radio">
+              <input type="radio" name="category" value="data structures" /> Data Structures{' '}
+            </label>
+            <label className="radio">
+              <input type="radio" name="category" value="html" />{' '}
+              HTML{' '}
+            </label>
+            <label className="radio">
+              <input type="radio" name="category" value="css" /> CSS{' '}
+            </label>
+            <label className="radio">
+              <input type="radio" name="category" value="react" /> React{' '}
+            </label>
+            <label className="radio">
+              <input type="radio" name="category" value="redux" /> Redux{' '}
+            </label>
+            <label className="radio">
+              <input type="radio" name="category" value="miscellaneous" />{' '}
+              Miscellaneous{' '}
+            </label>
+            {/* <label className="radio">
               <input type="radio" name="category" value="sports" /> Sports{' '}
             </label>
             <label className="radio">
@@ -64,7 +90,7 @@ class List extends React.Component {
             <label className="radio">
               <input type="radio" name="category" value="miscellaneous" />{' '}
               Miscellaneous{' '}
-            </label>
+            </label> */}
           </div>
         </div>
         <div className="columns is-centered is-multiline">

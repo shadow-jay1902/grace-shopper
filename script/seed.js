@@ -20,22 +20,59 @@ async function seed() {
       dob: faker.date.past()
     }))
 
-  await User.bulkCreate(allusers)
+  await User.bulkCreate(users)
 
-  const categories = ['sports', 'food', 'clothes', 'collectables', 'hype']
+  // const categories = ['sports', 'food', 'clothes', 'collectables', 'hype']
+  const categories = [
+    'javascript',
+    'debugging',
+    'data structures',
+    'html',
+    'css',
+    'react',
+    'redux',
+    'miscellaneous'
+  ]
 
-  const items = Array(200)
-    .fill('x')
-    .map(() => ({
-      name: faker.commerce.productName(),
+  // const items = Array(200)
+  //   .fill('x')
+  //   .map(() => ({
+  //     name: faker.commerce.productName(),
+  //     description: faker.lorem.sentence(),
+  //     price: faker.commerce.price() / 100,
+  //     stock: Math.floor(Math.random() * 100),
+  //     category: categories[Math.floor(Math.random() * categories.length)],
+  //     photoURLs: [faker.image.image()]
+  //   }))
+
+  // await Item.bulkCreate(items)
+
+  await Item.bulkCreate([
+    {
+      name: 'I Do Have A Very Particular Set Of Skills',
       description: faker.lorem.sentence(),
       price: faker.commerce.price() / 100,
       stock: Math.floor(Math.random() * 100),
-      category: categories[Math.floor(Math.random() * categories.length)],
-      photoURLs: [faker.image.image()]
-    }))
-
-  await Item.bulkCreate(items)
+      category: 'debugging',
+      photoURLs: ['https://www.probytes.net/wp-content/uploads/2018/01/4-1.png']
+    },
+    {
+      name: 'Played By Python',
+      description: faker.lorem.sentence(),
+      price: faker.commerce.price() / 100,
+      stock: Math.floor(Math.random() * 100),
+      category: 'javascript',
+      photoURLs: ['https://www.probytes.net/wp-content/uploads/2018/01/15-1.png']
+    },
+    {
+      name: 'Are You Talking To Me?',
+      description: faker.lorem.sentence(),
+      price: faker.commerce.price() / 100,
+      stock: Math.floor(Math.random() * 100),
+      category: 'miscellaneous',
+      photoURLs: ['https://www.probytes.net/wp-content/uploads/2018/01/13-1.png']
+    }
+  ])
 
   console.log(`seeded ${users.length} users`)
   console.log(`seeded successfully`)
