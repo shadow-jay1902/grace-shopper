@@ -17,7 +17,7 @@ class Item extends React.Component {
             <h1 className="title is-1 has-text-centered">{item.name}</h1>
             <div className="columns is-centered">
               <div className="column is-10">
-                <figure className="image is-4by3">
+                <figure className="image">
                   <img src={item.photoURLs && item.photoURLs[0]} />
                 </figure>
               </div>

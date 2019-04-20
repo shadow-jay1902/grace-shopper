@@ -35,40 +35,69 @@ class List extends React.Component {
       <div>
         <div className="title is-2 has-text-centered">LIST OF ITEMS</div>
         <div className="columns is-centered">
-          <div className="control" onClick={event => this.handleClick(event)}>
+          <div className="control">
             <label className="radio">
               <input
                 type="radio"
                 name="category"
                 value="all"
                 defaultChecked="true"
+                onClick={event => this.handleClick(event)}
               />{' '}
               All Items{' '}
             </label>
             <label className="radio">
-              <input type="radio" name="category" value="javascript" /> JavaScript{' '}
+              <input
+                type="radio"
+                name="category"
+                value="javascript"
+                onClick={event => this.handleClick(event)}
+              />{' '}
+              JavaScript{' '}
             </label>
             <label className="radio">
-              <input type="radio" name="category" value="debugging" /> Debugging{' '}
+              <input
+                type="radio"
+                name="category"
+                value="other languages"
+                onClick={event => this.handleClick(event)}
+              />{' '}
+              Other Languages{' '}
             </label>
             <label className="radio">
-              <input type="radio" name="category" value="data structures" /> Data Structures{' '}
+              <input
+                type="radio"
+                name="category"
+                value="frontend"
+                onClick={event => this.handleClick(event)}
+              />{' '}
+              Front End{' '}
             </label>
             <label className="radio">
-              <input type="radio" name="category" value="html" />{' '}
-              HTML{' '}
+              <input
+                type="radio"
+                name="category"
+                value="backend"
+                onClick={event => this.handleClick(event)}
+              />{' '}
+              Back End{' '}
             </label>
             <label className="radio">
-              <input type="radio" name="category" value="css" /> CSS{' '}
+              <input
+                type="radio"
+                name="category"
+                value="git"
+                onClick={event => this.handleClick(event)}
+              />{' '}
+              Git{' '}
             </label>
             <label className="radio">
-              <input type="radio" name="category" value="react" /> React{' '}
-            </label>
-            <label className="radio">
-              <input type="radio" name="category" value="redux" /> Redux{' '}
-            </label>
-            <label className="radio">
-              <input type="radio" name="category" value="miscellaneous" />{' '}
+              <input
+                type="radio"
+                name="category"
+                value="miscellaneous"
+                onClick={event => this.handleClick(event)}
+              />{' '}
               Miscellaneous{' '}
             </label>
             {/* <label className="radio">
