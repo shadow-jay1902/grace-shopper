@@ -20,7 +20,7 @@ async function seed() {
       dob: faker.date.past()
     }))
 
-  await User.bulkCreate(allusers)
+  await User.bulkCreate(users)
 
   const categories = ['sports', 'food', 'clothes', 'collectables', 'hype']
 
