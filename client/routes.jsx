@@ -10,14 +10,16 @@ import {
   AllItems,
   ConnectedCart
 } from './components'
-import {me} from './store'
+import {me, getItemsFromCart, getItemOntoCart} from './store'
 
 /**
  * COMPONENT
  */
 class Routes extends Component {
   componentDidMount() {
-    this.props.loadInitialData()
+    this.props.loadInitialData(()=> {
+      this.props.getCart()
+    })
   }
 
   render() {
@@ -59,8 +61,11 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    loadInitialData() {
-      dispatch(me())
+    loadInitialData(callback) {
+      dispatch(me(callback))
+    },
+    getCart(){
+      dispatch(getItemsFromCart())
     }
   }
 }
