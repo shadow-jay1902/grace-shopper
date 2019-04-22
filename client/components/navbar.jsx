@@ -1,8 +1,8 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
-import {logout} from '../store'
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { logout } from '../store'
 
 class Navbar extends Component {
   state = {
@@ -32,12 +32,18 @@ class Navbar extends Component {
             <img src="https://images.emojiterra.com/google/android-nougat/512px/1f6d2.png" />
           </a>
 
+          <div className="navbar-item">
+            <Link className="button is-info" to="/items">
+              View Products
+        </Link>
+          </div>
+
           <a
             onClick={this.toggleMenu}
             role="button"
             className={`navbar-burger burger ${
               this.state.menu ? 'is-active' : ''
-            }`}
+              }`}
             aria-label="menu"
             aria-expanded="false"
             data-target="navbarBasicExample"
@@ -65,15 +71,15 @@ class Navbar extends Component {
                     </a>
                   </div>
                 ) : (
-                  <>
-                    <Link to="/login" className="button is-primary">
-                      <strong>Login</strong>
+                    <>
+                      <Link to="/login" className="button is-primary">
+                        <strong>Login</strong>
+                      </Link>
+                      <Link to="/signup" className="button is-light">
+                        Sign Up
                     </Link>
-                    <Link to="/signup" className="button is-light">
-                      Sign Up
-                    </Link>
-                  </>
-                )}
+                    </>
+                  )}
               </div>
             </div>
           </div>
