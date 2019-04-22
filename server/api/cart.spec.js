@@ -83,7 +83,7 @@ describe('Order routes', () => {
     it('Should add items for the logged in user', async () => {
       const user = await Utils.signup(agent, codyInfo)
       const data = {
-        itemId: 1,
+        id: 1,
         quantity: 2
       }
       const order = await Utils.getCart(agent)
@@ -114,11 +114,11 @@ describe('Order routes', () => {
     it('Should have all of the items that were added to the users cart', async () => {
       const user = await Utils.signup(agent, codyInfo)
       const data1 = {
-        itemId: 1,
+        id: 1,
         quantity: 2
       }
       const data2 = {
-        itemId: 2,
+        id: 2,
         quantity: 4
       }
       const order = await Utils.getCart(agent)
@@ -137,11 +137,11 @@ describe('Order routes', () => {
     })
     it.skip('Should have all of the items that were added to the guests cart', async () => {
       const data1 = {
-        itemId: 1,
+        id: 1,
         quantity: 2
       }
       const data2 = {
-        itemId: 2,
+        id: 2,
         quantity: 4
       }
       const order = await Utils.getCart(agent)
@@ -164,11 +164,11 @@ describe('Order routes', () => {
     it('Should remove items from the users cart', async () => {
       const user = await Utils.signup(agent, codyInfo)
       const data1 = {
-        itemId: 1,
+        id: 1,
         quantity: 2
       }
       const data2 = {
-        itemId: 2,
+        id: 2,
         quantity: 4
       }
       await Utils.getCart(agent)
@@ -189,11 +189,11 @@ describe('Order routes', () => {
     })
     it.skip('Should remove items from the guests cart', async () => {
       const data1 = {
-        itemId: 1,
+        id: 1,
         quantity: 2
       }
       const data2 = {
-        itemId: 2,
+        id: 2,
         quantity: 4
       }
       await Utils.getCart(agent)
@@ -216,11 +216,11 @@ describe('Order routes', () => {
     it('Should update the quatity of items in a users cart', async () => {
       const user = await Utils.signup(agent, codyInfo)
       const data1 = {
-        itemId: 1,
+        id: 1,
         quantity: 2
       }
       const data2 = {
-        itemId: 2,
+        id: 2,
         quantity: 4
       }
       await Utils.getCart(agent)
@@ -245,11 +245,11 @@ describe('Order routes', () => {
     })
     it.skip('Should update the quatity of items in a guests cart', async () => {
       const data1 = {
-        itemId: 1,
+        id: 1,
         quantity: 2
       }
       const data2 = {
-        itemId: 2,
+        id: 2,
         quantity: 4
       }
       await Utils.getCart(agent)
@@ -262,7 +262,7 @@ describe('Order routes', () => {
         .send(data2)
         .expect(201)
       const {body} = await agent.put('api/cart').send({
-        itemId: 1,
+        id: 1,
         quantity: 5
       })
       Utils.expectCart(body)
@@ -277,11 +277,11 @@ describe('Order routes', () => {
     it('Should checkout a users cart', async () => {
       const user = await Utils.signup(agent, codyInfo)
       const data1 = {
-        itemId: 1,
+        id: 1,
         quantity: 2
       }
       const data2 = {
-        itemId: 2,
+        id: 2,
         quantity: 4
       }
       await Utils.getCart(agent)
@@ -291,7 +291,7 @@ describe('Order routes', () => {
       Utils.expectCart(body, 'user', user.id, true)
     })
   })
-  describe.only('Newcart', () => {
+  describe('Newcart', () => {
     beforeEach(createItems)
     it('Should make a new cart populated by the local storage if it already existed', async () => {
       await Utils.signup(agent, codyInfo)

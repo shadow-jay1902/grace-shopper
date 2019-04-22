@@ -38,7 +38,8 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     // console.log('REQ.BODYYYY: ', req.body)
-    await Item.create(req.body).then(item => res.status(204).json(item))
+    const newItem = await Item.create(req.body)
+    res.status(204).json(newItem)
   } catch (error) {
     next(error)
   }
