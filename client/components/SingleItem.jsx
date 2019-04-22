@@ -7,6 +7,9 @@ import {getItemOntoCart} from '../store/cart'
 class Item extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {
+      added: false
+    }
     this.handleAdd = this.handleAdd.bind(this)
   }
   componentDidMount() {
@@ -15,6 +18,9 @@ class Item extends React.Component {
 
   handleAdd(event) {
     this.props.addItem(this.props.item)
+    this.setState({
+      added: true
+    })
   }
   render() {
     const {item} = this.props
@@ -35,13 +41,31 @@ class Item extends React.Component {
                 <p>{item.description}</p>
               </div>
               <div className="column is-one-fifth">
-                <button
+                {!this.state.added ? (
+                  <button
+                    className="button is-small is-info is-rounded"
+                    item={item}
+                    onClick={event => this.handleAdd(event)}
+                  >
+                    ADD TO CART
+                  </button>
+                ) : (
+                  <button
+                    className="button is-small is-success is-info is-rounded"
+                    disabled
+                  >
+                    {' '}
+                    ADDED to CART{' '}
+                  </button>
+                )}
+
+                {/* <button
                   className="button is-small is-info is-rounded"
                   item={item}
                   onClick={event => this.handleAdd(event)}
                 >
                   ADD TO CART
-                </button>
+                </button> */}
               </div>
               <div className="column has-text-centered is-half">
                 <div className="is-large is-success is-size-5">

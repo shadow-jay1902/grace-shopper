@@ -8,6 +8,8 @@ import {
   checkoutCartThunk
 } from '../store/cart'
 
+import {Link} from 'react-router-dom'
+
 const dummyOrderList = [
   {
     name: 'recordPlayer',
@@ -46,16 +48,19 @@ export class Cart extends React.Component {
     this.handleCheckout = this.handleCheckout.bind(this)
     this.handleRemoveItem = this.handleRemoveItem.bind(this)
     this.handleEmptyCart = this.handleEmptyCart.bind(this)
-    this.handleCheckout = this.handleCheckout.bind(this)
+    // this.handleCheckout = this.handleCheckout.bind(this)
+    this.totalPrice = this.totalPrice.bind(this)
+    this.handleIncrement = this.handleIncrement.bind(this)
+    this.handleDecrement = this.handleDecrement.bind(this)
   }
 
   componentDidMount() {
     this.props.loadCart()
   }
 
-  handleCheckout(event) {
-    console.log('you clicked checkout!')
-  }
+  // handleCheckout(event) {
+  //   console.log('you clicked checkout!')
+  // }
 
   handleRemoveItem(id) {
     this.props.removeItem(id)
@@ -69,15 +74,28 @@ export class Cart extends React.Component {
     this.props.checkout(() => this.props.getItemsFromCart)
   }
 
-  // totalPrice(this.props.items){
-  //     let result = 0
-  //     dummyOrderList.forEach(item => {
-  //   result += item.price * item.quantity
-  // })
-  // return result
-  // }
+  totalPrice(items) {
+    let result = 0
+    items.forEach(item => {
+      result += item.price * item.quantity
+    })
+    return result / 100
+  }
+
+  handleIncrement(item) {
+    console.log('clicked increment')
+    console.log('Before: ', item.quantity)
+    item.quantity++
+    console.log('After: ', item.quantity)
+    // this.props.loadCart()
+  }
+
+  handleDecrement() {
+    // console.log('clicked decrement')
+  }
 
   render() {
+    console.log('inside of render', this.props.items)
     const itemsList = this.props.items
     return (
       <div className="columns is-centered">
@@ -89,8 +107,19 @@ export class Cart extends React.Component {
                 return (
                   <div className="card" key={item.id}>
                     <li className="itemName">{item.name}</li>
-                    <strong>Price: {item.price}</strong>
-                    <p>X {item.quantity}</p>
+                    <strong>Price: {item.price / 100}</strong>
+                    <div>
+                      <p>X {item.quantity}</p>
+                      <button
+                        item={item}
+                        onClick={() => this.handleIncrement(item)}
+                      >
+                        +
+                      </button>
+                      <button item={item} onClick={this.handleDecrement}>
+                        -
+                      </button>
+                    </div>
                     <button
                       className="button is-danger is-small is-pulled-right is-rounded"
                       type="button"
@@ -105,7 +134,7 @@ export class Cart extends React.Component {
               <p>You're Cart is empty</p>
             )}
           </ul>
-          {/* <p>Total Price {totalPrice(itemsList)} </p> */}
+          <p>Total Price {this.totalPrice(itemsList)} </p>
           {/* <button
             type="button"
             className="button is-danger"
@@ -120,6 +149,12 @@ export class Cart extends React.Component {
           >
             Checkout
           </button>
+          <Link
+            to="/items"
+            className="button is-warning  is-success is-one-third"
+          >
+            Keep Shopping
+          </Link>
         </div>
         <style jsx>
           {`
