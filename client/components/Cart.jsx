@@ -2,7 +2,11 @@ import React from 'react'
 import {connect} from 'react-redux'
 import history from '../history'
 import {getSelectItem} from '../store/item'
-import {getItemsFromCart} from '../store/cart'
+import {
+  getItemsFromCart,
+  removeFromCartThunk,
+  checkoutCartThunk
+} from '../store/cart'
 
 const dummyOrderList = [
   {
@@ -42,6 +46,7 @@ export class Cart extends React.Component {
     this.handleCheckout = this.handleCheckout.bind(this)
     this.handleRemoveItem = this.handleRemoveItem.bind(this)
     this.handleEmptyCart = this.handleEmptyCart.bind(this)
+    this.handleCheckout = this.handleCheckout.bind(this)
   }
 
   componentDidMount() {
@@ -56,16 +61,22 @@ export class Cart extends React.Component {
   handleRemoveItem(event) {
     console.log('you clicked remove single item!')
     console.log('that item id is: ', event.target.id)
+    const itemId = event.target.id
+    this.props.removeItem(itemId)
   }
 
   handleEmptyCart() {
     console.log('clicked empty cart')
   }
 
+  handleCheckout() {
+    this.props.checkout(() => this.props.getItemsFromCart)
+  }
+
   render() {
     console.log('inside of cart render')
-    console.log(this.props.cart.cartItems)
-    const itemsList = this.props.cart.cartItems.items
+    console.log(this.props.items)
+    const itemsList = this.props.items
     console.log('Items List!: ', itemsList)
     return (
       <div className="columns is-centered">
@@ -95,13 +106,13 @@ export class Cart extends React.Component {
             )}
           </ul>
           {/* <p>Total Price {totalPrice(itemsList)} </p> */}
-          <button
+          {/* <button
             type="button"
             className="button is-danger"
             onClick={this.handleEmptyCart}
           >
             Empty Cart
-          </button>
+          </button> */}
           <button
             onClick={this.handleCheckout}
             className="button is-primary"
@@ -129,7 +140,7 @@ export class Cart extends React.Component {
 
 const mapState = state => {
   return {
-    cart: state.cart
+    ...state.cart
   }
 }
 
@@ -137,7 +148,9 @@ const mapDispatch = dispatch => {
   return {
     loadCart: () => {
       return dispatch(getItemsFromCart())
-    }
+    },
+    removeItem: itemId => dispatch(removeFromCartThunk(itemId)),
+    checkout: cb => dispatch(checkoutCartThunk(cb))
   }
 }
 

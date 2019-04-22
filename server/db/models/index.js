@@ -7,8 +7,8 @@ const OrderItem = require('./order_item')
 
 User.hasMany(Order)
 Order.belongsTo(User)
-Item.belongsToMany(Order, { through: OrderItem })
-Order.belongsToMany(Item, { through: OrderItem })
+Item.belongsToMany(Order, {through: OrderItem})
+Order.belongsToMany(Item, {through: OrderItem})
 
 /**
  * If we had any associations to make, this would be a great place to put them!

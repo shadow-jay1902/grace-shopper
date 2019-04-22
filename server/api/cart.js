@@ -83,6 +83,8 @@ router.post('/', async (req, res, next) => {
       })
       const orderId = order.id
       req.body.orderId = orderId
+      const itemId = req.body.id
+      req.body.itemId = itemId
       const newOrderItem = await OrderItem.create(req.body)
       res.status(201).json(newOrderItem)
     } else {
@@ -114,6 +116,7 @@ router.delete('/:itemId', async (req, res, next) => {
   try {
     if (req.user) {
       const {dataValues: {id}} = req.user
+      console.log('Inside of Delete Route! ', req.params)
       let order = await Order.findOne({
         where: {
           userId: id,
@@ -171,7 +174,7 @@ router.put('/checkout', async (req, res, next) => {
   try {
     if (req.user) {
       const {dataValues: {id}} = req.user
-      const [,[updatedOrder]] = await Order.update(
+      const [, [updatedOrder]] = await Order.update(
         {
           ordered: true
         },
@@ -179,7 +182,8 @@ router.put('/checkout', async (req, res, next) => {
           where: {
             userId: id,
             ordered: false
-          }, returning: true
+          },
+          returning: true
         }
       )
       let order = await Order.findOne({
