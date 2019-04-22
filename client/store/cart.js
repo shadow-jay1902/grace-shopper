@@ -25,13 +25,13 @@ export const getItemsFromCart = () => async (dispatch, getState) => {
       const res = await axios.get('/api/cart')
       dispatch(gotItemsFromCart(res.data))
     } else {
-      const cart = window.localStorage.getItem('cart')
-      dispatch(gotItemsFromCart(JSON.parse(cart)))
+      let cart = window.localStorage.getItem('cart')
       if (!cart) {
         let newCart = {items: []}
         window.localStorage.setItem('cart', JSON.stringify(newCart))
-        dispatch(gotItemsFromCart(newCart))
+        cart = newCart
       }
+      dispatch(gotItemsFromCart(JSON.parse(cart)))
     }
   } catch (err) {
     console.error(err)
@@ -46,8 +46,11 @@ export const getItemOntoCart = item => async (dispatch, getState) => {
       const action = setItemOntoCart(createdOrderItem)
       dispatch(action)
     } else {
-      const currCart = getState().cart
-      const newCart = {...currCart, items: [...currCart.items, item]}
+      const currCart = JSON.parse(window.localStorage.getItem('cart'))
+      const newCart = {
+        ...currCart,
+        items: [...currCart.items.filter(({id}) => id !== item.id), item]
+      }
       window.localStorage.setItem('cart', JSON.stringify(newCart))
       dispatch(setItemOntoCart(item))
     }
@@ -63,10 +66,15 @@ export const removeFromCartThunk = itemId => async (dispatch, getState) => {
       await axios.delete(`/api/cart/${id}`)
       const action = removeFromCart(id)
       dispatch(action)
-    }
-    else {
-      const currCart = getState().cart
-      const newCart = {...currCart, items: [...currCart.items.filter(item => item.id !== itemId)]}
+    } else {
+      const currCart = JSON.parse(window.localStorage.getItem('cart'))
+      console.log("currcart", currCart)
+      console.log("itemId", itemId)
+      const newCart = {
+        ...currCart,
+        items: [...currCart.items.filter(item => item.id !== itemId)]
+      }
+      console.log(newCart)
       window.localStorage.setItem('cart', JSON.stringify(newCart))
       dispatch(removeFromCart(itemId))
     }
