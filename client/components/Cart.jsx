@@ -79,7 +79,7 @@ export class Cart extends React.Component {
     items.forEach(item => {
       result += item.price * item.quantity
     })
-    return result / 100
+    return result
   }
 
   handleIncrement(item) {
@@ -107,7 +107,7 @@ export class Cart extends React.Component {
                 return (
                   <div className="card" key={item.id}>
                     <li className="itemName">{item.name}</li>
-                    <strong>Price: {item.price / 100}</strong>
+                    <strong>Price: {item.price}</strong>
                     <div>
                       <p>X {item.quantity}</p>
                       <button
