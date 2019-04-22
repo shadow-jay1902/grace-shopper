@@ -19,32 +19,57 @@ const checkoutCart = () => ({
   type: CHECKOUT_CART
 })
 
-export const getItemsFromCart = () => async dispatch => {
+export const getItemsFromCart = () => async (dispatch, getState) => {
   try {
-    const res = await axios.get('/api/cart')
-    dispatch(gotItemsFromCart(res.data))
+    if (getState().user.id) {
+      const res = await axios.get('/api/cart')
+      dispatch(gotItemsFromCart(res.data))
+    } else {
+      const cart = window.localStorage.getItem('cart')
+      dispatch(gotItemsFromCart(JSON.parse(cart)))
+      if (!cart) {
+        let newCart = {items: []}
+        window.localStorage.setItem('cart', JSON.stringify(newCart))
+        dispatch(gotItemsFromCart(newCart))
+      }
+    }
   } catch (err) {
     console.error(err)
   }
 }
 
-export const getItemOntoCart = item => async dispatch => {
+export const getItemOntoCart = item => async (dispatch, getState) => {
   try {
-    const res = await axios.post('/api/cart', item)
-    const createdOrderItem = res.data
-    const action = setItemOntoCart(createdOrderItem)
-    dispatch(action)
+    if (getState().user.id) {
+      const res = await axios.post('/api/cart', item)
+      const createdOrderItem = res.data
+      const action = setItemOntoCart(createdOrderItem)
+      dispatch(action)
+    } else {
+      const currCart = getState().cart
+      const newCart = {...currCart, items: [...currCart.items, item]}
+      window.localStorage.setItem('cart', JSON.stringify(newCart))
+      dispatch(setItemOntoCart(item))
+    }
   } catch (err) {
     console.error(err)
   }
 }
 
-export const removeFromCartThunk = itemId => async dispatch => {
+export const removeFromCartThunk = itemId => async (dispatch, getState) => {
   try {
-    const id = Number(itemId)
-    await axios.delete(`/api/cart/${id}`)
-    const action = removeFromCart(id)
-    dispatch(action)
+    if (getState().user.id) {
+      const id = Number(itemId)
+      await axios.delete(`/api/cart/${id}`)
+      const action = removeFromCart(id)
+      dispatch(action)
+    }
+    else {
+      const currCart = getState().cart
+      const newCart = {...currCart, items: [...currCart.items.filter(item => item.id !== itemId)]}
+      window.localStorage.setItem('cart', JSON.stringify(newCart))
+      dispatch(removeFromCart(itemId))
+    }
   } catch (err) {
     console.error(err)
   }
