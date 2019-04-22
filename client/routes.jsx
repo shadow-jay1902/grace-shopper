@@ -1,6 +1,6 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {withRouter, Route, Switch} from 'react-router-dom'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { withRouter, Route, Switch } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {
   Login,
@@ -10,20 +10,20 @@ import {
   AllItems,
   ConnectedCart
 } from './components'
-import {me, getItemsFromCart, getItemOntoCart} from './store'
+import { me, getItemsFromCart, getItemOntoCart } from './store'
 
 /**
  * COMPONENT
  */
 class Routes extends Component {
   componentDidMount() {
-    this.props.loadInitialData(()=> {
+    this.props.loadInitialData(() => {
       this.props.getCart()
     })
   }
 
   render() {
-    const {isLoggedIn} = this.props
+    const { isLoggedIn } = this.props
 
     return (
       <Switch>
@@ -64,7 +64,7 @@ const mapDispatch = dispatch => {
     loadInitialData(callback) {
       dispatch(me(callback))
     },
-    getCart(){
+    getCart() {
       dispatch(getItemsFromCart())
     }
   }
