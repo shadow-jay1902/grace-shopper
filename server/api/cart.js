@@ -209,4 +209,26 @@ router.put('/checkout', async (req, res, next) => {
   }
 })
 
-
+router.post('/newcart', async (req, res, next) => {
+  try {
+    if (req.user) {
+      const {id} = req.user
+      const order = await Order.findOne({
+        where: {
+          userId: id,
+          ordered: false
+        }
+      })
+      const {items} = req.body
+      const rowsToCreate = items.map(async item => {
+        let itemInDB = await Item.findByPk(item.itemId)
+        order.addItem(itemInDB, {
+          through: {quantity: item.quantity}
+        })
+      })
+      res.status(201).send(rowsToCreate)
+    }
+  } catch (error) {
+    next(error)
+  }
+})

@@ -291,4 +291,31 @@ describe('Order routes', () => {
       Utils.expectCart(body, 'user', user.id, true)
     })
   })
+  describe.only('Newcart', () => {
+    beforeEach(createItems)
+    it('Should make a new cart populated by the local storage if it already existed', async () => {
+      await Utils.signup(agent, codyInfo)
+      const data1 = {
+        itemId: 1,
+        quantity: 2
+      }
+      const data2 = {
+        itemId: 2,
+        quantity: 4
+      }
+      const body = {items: [data1, data2]}
+      const initialCart = await Utils.getCart(agent)
+      expect(initialCart.items).to.deep.equal([])
+      await agent
+        .post('/api/cart/newcart')
+        .send(body)
+        .expect(201)
+      const updatedCart = await Utils.getCart(agent)
+      expect(updatedCart.items[0].id).to.equal(1)
+      expect(updatedCart.items[1].id).to.equal(2)
+      expect(updatedCart.items[0].quantity).to.equal(2)
+      expect(updatedCart.items[1].quantity).to.equal(4)
+
+    })
+  })
 })

@@ -49,7 +49,10 @@ export const getItemOntoCart = item => async (dispatch, getState) => {
       const currCart = JSON.parse(window.localStorage.getItem('cart'))
       const newCart = {
         ...currCart,
-        items: [...currCart.items.filter(({id}) => id !== item.id), {...item, quantity: 1}]
+        items: [
+          ...currCart.items.filter(({id}) => id !== item.id),
+          {...item, quantity: 1}
+        ]
       }
       window.localStorage.setItem('cart', JSON.stringify(newCart))
       dispatch(setItemOntoCart(item))
@@ -68,8 +71,8 @@ export const removeFromCartThunk = itemId => async (dispatch, getState) => {
       dispatch(action)
     } else {
       const currCart = JSON.parse(window.localStorage.getItem('cart'))
-      console.log("currcart", currCart)
-      console.log("itemId", itemId)
+      console.log('currcart', currCart)
+      console.log('itemId', itemId)
       const newCart = {
         ...currCart,
         items: [...currCart.items.filter(item => item.id !== itemId)]
@@ -83,11 +86,15 @@ export const removeFromCartThunk = itemId => async (dispatch, getState) => {
   }
 }
 
-export const checkoutCartThunk = cb => async dispatch => {
+export const checkoutCartThunk = cb => async (dispatch, getState) => {
   try {
-    await axios.put('/api/cart/checkout')
-    dispatch(checkoutCart())
-    cb()
+    if (getState().user.id) {
+      await axios.put('/api/cart/checkout')
+      dispatch(checkoutCart())
+      cb()
+    } else {
+      cb()
+    }
   } catch (error) {
     console.log(error)
   }
