@@ -14,7 +14,6 @@ class Item extends React.Component {
   }
 
   handleAdd(event) {
-    console.log(this.props.item)
     this.props.addItem(this.props.item)
   }
   render() {

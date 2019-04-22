@@ -74,6 +74,7 @@ router.get('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     if (req.user) {
+      console.log(req.user)
       const {id} = req.user
       const order = await Order.findOne({
         where: {
@@ -207,3 +208,5 @@ router.put('/checkout', async (req, res, next) => {
     next(error)
   }
 })
+
+

@@ -57,9 +57,8 @@ export class Cart extends React.Component {
     console.log('you clicked checkout!')
   }
 
-  handleRemoveItem(event) {
-    const itemId = event.target.id
-    this.props.removeItem(itemId)
+  handleRemoveItem(id) {
+    this.props.removeItem(id)
   }
 
   handleEmptyCart() {
@@ -95,8 +94,7 @@ export class Cart extends React.Component {
                     <button
                       className="button is-danger is-small is-pulled-right is-rounded"
                       type="button"
-                      onClick={this.handleRemoveItem}
-                      id={item.id}
+                      onClick={() => this.handleRemoveItem(item.id)}
                     >
                       X
                     </button>

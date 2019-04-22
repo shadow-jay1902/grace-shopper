@@ -19,32 +19,65 @@ const checkoutCart = () => ({
   type: CHECKOUT_CART
 })
 
-export const getItemsFromCart = () => async dispatch => {
+export const getItemsFromCart = () => async (dispatch, getState) => {
   try {
-    const res = await axios.get('/api/cart')
-    dispatch(gotItemsFromCart(res.data))
+    if (getState().user.id) {
+      const res = await axios.get('/api/cart')
+      dispatch(gotItemsFromCart(res.data))
+    } else {
+      let cart = window.localStorage.getItem('cart')
+      if (!cart) {
+        let newCart = {items: []}
+        window.localStorage.setItem('cart', JSON.stringify(newCart))
+        cart = newCart
+      }
+      dispatch(gotItemsFromCart(JSON.parse(cart)))
+    }
   } catch (err) {
     console.error(err)
   }
 }
 
-export const getItemOntoCart = item => async dispatch => {
+export const getItemOntoCart = item => async (dispatch, getState) => {
   try {
-    const res = await axios.post('/api/cart', item)
-    const createdOrderItem = res.data
-    const action = setItemOntoCart(createdOrderItem)
-    dispatch(action)
+    if (getState().user.id) {
+      const res = await axios.post('/api/cart', item)
+      const createdOrderItem = res.data
+      const action = setItemOntoCart(createdOrderItem)
+      dispatch(action)
+    } else {
+      const currCart = JSON.parse(window.localStorage.getItem('cart'))
+      const newCart = {
+        ...currCart,
+        items: [...currCart.items.filter(({id}) => id !== item.id), {...item, quantity: 1}]
+      }
+      window.localStorage.setItem('cart', JSON.stringify(newCart))
+      dispatch(setItemOntoCart(item))
+    }
   } catch (err) {
     console.error(err)
   }
 }
 
-export const removeFromCartThunk = itemId => async dispatch => {
+export const removeFromCartThunk = itemId => async (dispatch, getState) => {
   try {
-    const id = Number(itemId)
-    await axios.delete(`/api/cart/${id}`)
-    const action = removeFromCart(id)
-    dispatch(action)
+    if (getState().user.id) {
+      const id = Number(itemId)
+      await axios.delete(`/api/cart/${id}`)
+      const action = removeFromCart(id)
+      dispatch(action)
+    } else {
+      const currCart = JSON.parse(window.localStorage.getItem('cart'))
+      console.log("currcart", currCart)
+      console.log("itemId", itemId)
+      const newCart = {
+        ...currCart,
+        items: [...currCart.items.filter(item => item.id !== itemId)]
+      }
+      console.log(newCart)
+      window.localStorage.setItem('cart', JSON.stringify(newCart))
+      dispatch(removeFromCart(itemId))
+    }
   } catch (err) {
     console.error(err)
   }
