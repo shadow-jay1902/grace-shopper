@@ -49,7 +49,7 @@ export const getItemOntoCart = item => async (dispatch, getState) => {
       const currCart = JSON.parse(window.localStorage.getItem('cart'))
       const newCart = {
         ...currCart,
-        items: [...currCart.items.filter(({id}) => id !== item.id), item]
+        items: [...currCart.items.filter(({id}) => id !== item.id), {...item, quantity: 1}]
       }
       window.localStorage.setItem('cart', JSON.stringify(newCart))
       dispatch(setItemOntoCart(item))
