@@ -54,13 +54,10 @@ export class Cart extends React.Component {
   }
 
   handleCheckout(event) {
-    //use the orderID to make order dispatch
     console.log('you clicked checkout!')
   }
 
   handleRemoveItem(event) {
-    console.log('you clicked remove single item!')
-    console.log('that item id is: ', event.target.id)
     const itemId = event.target.id
     this.props.removeItem(itemId)
   }
@@ -82,10 +79,7 @@ export class Cart extends React.Component {
   // }
 
   render() {
-    console.log('inside of cart render')
-    console.log(this.props.items)
     const itemsList = this.props.items
-    console.log('Items List!: ', itemsList)
     return (
       <div className="columns is-centered">
         <div className="column has-text-centered is-three-fifths">
@@ -163,11 +157,3 @@ const mapDispatch = dispatch => {
 }
 
 export const ConnectedCart = connect(mapState, mapDispatch)(Cart)
-
-// display all items in the cart
-// display name of items
-// display quantity of items
-// display options to update the quantity of items
-// display price of items
-// display total price of items
-// should have a checkout button
