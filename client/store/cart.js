@@ -88,13 +88,9 @@ export const removeFromCartThunk = itemId => async (dispatch, getState) => {
 
 export const checkoutCartThunk = cb => async (dispatch, getState) => {
   try {
-    if (getState().user.id) {
-      await axios.put('/api/cart/checkout')
-      dispatch(checkoutCart())
-      cb()
-    } else {
-      cb()
-    }
+    await axios.put('/api/cart/checkout')
+    dispatch(checkoutCart())
+    cb()
   } catch (error) {
     console.log(error)
   }
