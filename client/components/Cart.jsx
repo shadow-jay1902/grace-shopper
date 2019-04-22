@@ -73,6 +73,14 @@ export class Cart extends React.Component {
     this.props.checkout(() => this.props.getItemsFromCart)
   }
 
+  // totalPrice(this.props.items){
+  //     let result = 0
+  //     dummyOrderList.forEach(item => {
+  //   result += item.price * item.quantity
+  // })
+  // return result
+  // }
+
   render() {
     console.log('inside of cart render')
     console.log(this.props.items)

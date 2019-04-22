@@ -1,12 +1,12 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-return (
+return (<div>
   <div className="columns is-centered">
     <div className="column has-text-centered is-three-fifths">
       <div className="title is-2">Cart</div>
       <ul>
-        {itemsList ? (
+        {
           itemsList.map(item => {
             return (
               <div className="card" key={item.id}>
@@ -24,8 +24,7 @@ return (
               </div>
             )
           })
-        ) : (
-          <p>You're Cart is empty</p>
-        )}
+        )
       </ul>
+      </div>
       {/* <p>Total Price {totalPrice(itemsList)} </p> */}
