@@ -2,12 +2,21 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {getSelectItem} from '../store/item'
 import history from '../history'
+import {getItemOntoCart} from '../store/cart'
 
 class Item extends React.Component {
+  constructor(props) {
+    super(props)
+    this.handleAdd = this.handleAdd.bind(this)
+  }
   componentDidMount() {
     this.props.loadSingleItem()
   }
 
+  handleAdd(event) {
+    console.log(this.props.item)
+    this.props.addItem(this.props.item)
+  }
   render() {
     const {item} = this.props
     return (
@@ -27,7 +36,11 @@ class Item extends React.Component {
                 <p>{item.description}</p>
               </div>
               <div className="column is-one-fifth">
-                <button className="button is-small is-info is-rounded">
+                <button
+                  className="button is-small is-info is-rounded"
+                  item={item}
+                  onClick={event => this.handleAdd(event)}
+                >
                   ADD TO CART
                 </button>
               </div>
@@ -82,7 +95,8 @@ const mapDispatch = (dispatch, ownProps) => {
     loadSingleItem: () => {
       const itemId = ownProps.match.params.id
       return dispatch(getSelectItem(itemId))
-    }
+    },
+    addItem: item => dispatch(getItemOntoCart(item))
   }
 }
 

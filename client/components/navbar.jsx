@@ -13,6 +13,10 @@ class Navbar extends Component {
       menu: !this.state.menu
     })
   }
+  handleItemsClick() {
+    console.log('you clicked all items!')
+  }
+
   componentDidMount() {
     console.log(this.props.match)
   }
@@ -45,17 +49,21 @@ class Navbar extends Component {
         </div>
 
         <div className={`navbar-menu ${this.state.menu ? 'is-active' : ''}`}>
-          <button className="allItemsButton">All Items</button>
           <div className="navbar-end">
             <div className="navbar-item">
               <div className="buttons">
                 {this.props.isLoggedIn ? (
-                  <a
-                    onClick={this.props.handleClick}
-                    className="button is-warning"
-                  >
-                    <strong>Logout</strong>
-                  </a>
+                  <div>
+                    <Link to="/home" className="button is-primary">
+                      Home
+                    </Link>
+                    <a
+                      onClick={this.props.handleClick}
+                      className="button is-warning"
+                    >
+                      <strong>Logout</strong>
+                    </a>
+                  </div>
                 ) : (
                   <>
                     <Link to="/login" className="button is-primary">

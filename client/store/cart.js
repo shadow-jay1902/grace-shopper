@@ -1,53 +1,79 @@
-// import axios from 'axios'
+import axios from 'axios'
 
-// const GOT_ITEMS_FROM_CART = 'GOT_ITEMS_FROM_CART'
-// const SET_ITEM_ONTO_CART = 'SET_ITEM_ONTO_CART'
-// const REMOVED_FROM_CART = 'REMOVED_FROM_CART'
+const GOT_ITEMS_FROM_CART = 'GOT_ITEMS_FROM_CART'
+const SET_ITEM_ONTO_CART = 'SET_ITEM_ONTO_CART'
+const REMOVED_FROM_CART = 'REMOVED_FROM_CART'
+const CHECKOUT_CART = 'CHECKOUT_CART'
 
-// const initialState = {
-//   cartItems: [],
-// }
+const initialState = {
+  items: []
+}
 
-// const gotItemsFromCart = items => ({ type: GOT_ITEMS_FROM_CART, items })
+const gotItemsFromCart = cart => ({type: GOT_ITEMS_FROM_CART, cart})
 
-// const setItemOntoCart = item => ({ type: SET_ITEM_ONTO_CART, item})
+const setItemOntoCart = item => ({type: SET_ITEM_ONTO_CART, item})
 
-// const removeFromCart = itemId => ({ type: REMOVED_FROM_CART, itemId })
+const removeFromCart = itemId => ({type: REMOVED_FROM_CART, itemId})
 
-// export const getItemsFromCart = () => async dispatch => {
-//   try {
-//     const res = await axios.get('/api/cart')
-//     dispatch(gotItemsFromCart(res.data))
-//   } catch (err) {
-//     console.error(err)
-//   }
-// }
+const checkoutCart = () => ({
+  type: CHECKOUT_CART
+})
 
-// export const getItemOntoCart = item => async dispatch => {
-//   try {
-//     const res = await axios.post('/api/cart', item)
-//     dispatch(setItemOntoCart(res.data))
-//   } catch (err) {
-//     console.error(err)
-//   }
-// }
+export const getItemsFromCart = () => async dispatch => {
+  try {
+    const res = await axios.get('/api/cart')
+    dispatch(gotItemsFromCart(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
 
-// export const removeFromCart = itemId => async dispatch => {
-//   try {
-//     const id = Number(itemId)
-//     await axios.delete(`/api/cart/:id`)
-//   } catch (err) {
-//     console.error(err)
-//   }
-// }
+export const getItemOntoCart = item => async dispatch => {
+  try {
+    const res = await axios.post('/api/cart', item)
+    const createdOrderItem = res.data
+    const action = setItemOntoCart(createdOrderItem)
+    dispatch(action)
+  } catch (err) {
+    console.error(err)
+  }
+}
 
-// export const cartReducer = function(state = initialState, action) {
-//   switch (action.type) {
-//     case GOT_ITEMS_FROM_CART:
-//       return {...state, cartItems: action.items}
-//     case SET_ITEM_ONTO_CART:
-//       return {...state, cartItems: [...state.cartItems, action.item]}
-//     default:
-//       return state
-//   }
-// }
+export const removeFromCartThunk = itemId => async dispatch => {
+  try {
+    const id = Number(itemId)
+    await axios.delete(`/api/cart/${id}`)
+    const action = removeFromCart(id)
+    dispatch(action)
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const checkoutCartThunk = cb => async dispatch => {
+  try {
+    await axios.put('/api/cart/checkout')
+    dispatch(checkoutCart())
+    cb()
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const cartReducer = function(state = initialState, action) {
+  switch (action.type) {
+    case GOT_ITEMS_FROM_CART:
+      return action.cart
+    case SET_ITEM_ONTO_CART:
+      return {...state, items: [...state.items, action.item]}
+    case REMOVED_FROM_CART:
+      return {
+        ...state,
+        items: state.items.filter(item => item.id !== Number(action.itemId))
+      }
+    case CHECKOUT_CART:
+      return initialState
+    default:
+      return state
+  }
+}
