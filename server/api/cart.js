@@ -193,10 +193,20 @@ router.put('/checkout', async (req, res, next) => {
         include: [{model: Item}]
       })
       const cart = order.dataValues
-      cart.items = cart.items.map(item => {
+      cart.items = cart.items.map(async item => {
         const newItem = item.dataValues
         newItem.quantity = newItem.order_item.dataValues.quantity
+        const itemModel = await Item.findByPk(item.id)
+        const newStock = itemModel.stock - newItem.quantity
+        await itemModel.update({stock: newStock})
         return newItem
+      })
+      await Order.findOrCreate({
+        where: {
+          userId: id,
+          ordered: false
+        },
+        include: [{model: Item}]
       })
       res.status(201).send(cart)
     } else {
