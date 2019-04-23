@@ -1,5 +1,6 @@
 import React from 'react'
 import history from '../history'
+import {decimalCleaner} from '../utils'
 
 const ItemThumbnail = props => {
   const {item} = props
@@ -14,7 +15,7 @@ const ItemThumbnail = props => {
           <img src={item.photoURLs && item.photoURLs[0]} />
         </figure>
         <div className="is-large is-success is-size-5">
-          <strong>${item.price}</strong>
+          <strong>${decimalCleaner(item.price * 100)}</strong>
         </div>
       </div>
       <style jsx>
