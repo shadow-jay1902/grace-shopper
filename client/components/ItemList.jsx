@@ -35,34 +35,69 @@ class List extends React.Component {
       <div>
         <div className="title is-2 has-text-centered">LIST OF ITEMS</div>
         <div className="columns is-centered">
-          <div className="control" onClick={event => this.handleClick(event)}>
+          <div className="control">
             <label className="radio">
               <input
                 type="radio"
                 name="category"
                 value="all"
                 defaultChecked="true"
+                onClick={event => this.handleClick(event)}
               />{' '}
               All Items{' '}
             </label>
             <label className="radio">
-              <input type="radio" name="category" value="sports" /> Sports{' '}
+              <input
+                type="radio"
+                name="category"
+                value="sports"
+                onClick={event => this.handleClick(event)}
+              />{' '}
+              Sports{' '}
             </label>
             <label className="radio">
-              <input type="radio" name="category" value="food" /> Food{' '}
+              <input
+                type="radio"
+                name="category"
+                value="food"
+                onClick={event => this.handleClick(event)}
+              />{' '}
+              Food{' '}
             </label>
             <label className="radio">
-              <input type="radio" name="category" value="clothes" /> Clothes{' '}
+              <input
+                type="radio"
+                name="category"
+                value="clothes"
+                onClick={event => this.handleClick(event)}
+              />{' '}
+              Clothes{' '}
             </label>
             <label className="radio">
-              <input type="radio" name="category" value="collectables" />{' '}
+              <input
+                type="radio"
+                name="category"
+                value="collectables"
+                onClick={event => this.handleClick(event)}
+              />{' '}
               Collectables{' '}
             </label>
             <label className="radio">
-              <input type="radio" name="category" value="hype" /> Hype{' '}
+              <input
+                type="radio"
+                name="category"
+                value="hype"
+                onClick={event => this.handleClick(event)}
+              />{' '}
+              Hype{' '}
             </label>
             <label className="radio">
-              <input type="radio" name="category" value="miscellaneous" />{' '}
+              <input
+                type="radio"
+                name="category"
+                value="miscellaneous"
+                onClick={event => this.handleClick(event)}
+              />{' '}
               Miscellaneous{' '}
             </label>
           </div>

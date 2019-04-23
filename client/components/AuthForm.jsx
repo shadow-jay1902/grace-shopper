@@ -94,7 +94,7 @@ class AuthForm extends React.Component {
               </button>
             </div>
           </form>
-          {formName === 'login' && <a href="/auth/google">Login with Google</a>}
+          {/* {formName === 'login' && <a href="/auth/google">Login with Google</a>} */}
         </div>
         <style jsx>{`
           .column {
