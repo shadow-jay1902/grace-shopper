@@ -8,7 +8,8 @@ import {
   UserHome,
   SingleItem,
   AllItems,
-  ConnectedCart
+  ConnectedCart,
+  ConnectedOrderHistory
 } from './components'
 import { me, getItemsFromCart, getItemOntoCart } from './store'
 
@@ -37,6 +38,7 @@ class Routes extends Component {
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
+            <Route path="/order_history" component={ConnectedOrderHistory} />
             <Route path="/home" component={UserHome} />
             <Route path="/" component={UserHome} />
           </Switch>
