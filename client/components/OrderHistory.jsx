@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {getOrderHistoryThunk} from '../store/order-history'
+import {getOrderHistoryThunk, orderHistoryReducer} from '../store/order-history'
 
 import {Link} from 'react-router-dom'
 import HistoryItem from './HistoryItem'
@@ -16,23 +16,50 @@ export class OrderHistory extends React.Component {
   }
 
   render() {
-    const {orderHistory} = this.props
+    let {orderHistory} = this.props
+    if (orderHistory) {
+      orderHistory = orderHistory
+        .filter(order => order.items.length)
+        .map(order => {
+          return {
+            ...order,
+            totalPrice: order.items.reduce((acc, item) => {
+              acc += item.price
+              return acc
+            }, 0)
+          }
+        })
+    }
     return (
       <div className="main columns is-centered">
         <div className="column has-text-centered is-three-fifths">
           <div className="title is-2">Previous Orders</div>
           <ul>
             {orderHistory ? (
-              orderHistory.filter(order => order.items.length).map(order => {
-                return (
-                  <div className="box" key={order.id}>
-                    <p><strong>Ordered On: {order.updatedAt.slice(0, 10)}</strong></p>
-                    {order.items.map(item => {
-                      return <HistoryItem key={item.id} item={item} />
-                    })}
-                  </div>
-                )
-              })
+              orderHistory
+                .map(order => {
+                  return (
+                    <div key={order.id}>
+                      <div className="box">
+                        <p>
+                          <strong>
+                            Ordered On: {order.updatedAt.slice(0, 10)}
+                          </strong>
+                        </p>
+                        <p>
+                          <strong>
+                            Total Price: ${decimalCleaner(order.totalPrice)}
+                          </strong>
+                        </p>
+                        {order.items.map(item => {
+                          return <HistoryItem key={item.id} item={item} />
+                        })}
+                      </div>
+                      <hr />
+                    </div>
+                  )
+                })
+                .reverse()
             ) : (
               <p>No Order History To Show</p>
             )}
@@ -68,6 +95,12 @@ export class OrderHistory extends React.Component {
             }
             ul {
               margin-bottom: 4rem;
+            }
+            hr {
+              border: 0;
+              height: 1px;
+              background: #333;
+              background-image: linear-gradient(to right, #ccc, #333, #ccc);
             }
           `}
         </style>

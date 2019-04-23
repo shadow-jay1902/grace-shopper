@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {getSelectItem} from '../store/item'
 import history from '../history'
 import {getItemOntoCart} from '../store/cart'
+import { decimalCleaner } from '../utils';
 
 class Item extends React.Component {
   constructor(props) {
@@ -69,7 +70,7 @@ class Item extends React.Component {
               </div>
               <div className="column has-text-centered is-half">
                 <div className="is-large is-success is-size-5">
-                  <strong>${item.price}</strong>
+                  <strong>${decimalCleaner(item.price * 100)}</strong>
                 </div>
               </div>
               <div className="column has-text-centered is-half">

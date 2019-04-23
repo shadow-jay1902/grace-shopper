@@ -44,7 +44,7 @@ class CartItem extends Component {
           </p>
           <p className="card-header-icon">
             <strong>
-              Price:{' '}
+              Price:{' '}$
               {decimalCleaner(
                 (this.state.quantity || item.quantity) * item.price
               )}

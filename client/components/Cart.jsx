@@ -50,7 +50,10 @@ export class Cart extends React.Component {
 
   handleCheckout() {
     this.props.checkout(
-      () => this.props.getItemsFromCart,
+      () => {
+        this.props.loadCart()
+        this.props.history.push('/home')
+      },
       () => {
         this.props.history.push('/login')
       }
@@ -85,7 +88,7 @@ export class Cart extends React.Component {
         <div className="column has-text-centered is-three-fifths">
           <div className="title is-2">Cart</div>
           <ul>
-            {itemsList ? (
+            {itemsList.length ? (
               itemsList.map(item => {
                 return (
                   <CartItem
@@ -101,7 +104,7 @@ export class Cart extends React.Component {
           </ul>
           <nav className="navbar is-fixed-bottom has-text-centered">
             <p className="is-size-4 has-text-white has-text-weight-bold">
-              Total Price: {decimalCleaner(this.totalPrice(itemsList))}{' '}
+              Total Price: ${decimalCleaner(this.totalPrice(itemsList))}{' '}
             </p>
             {/* <button
             type="button"
