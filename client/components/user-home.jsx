@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
+import {ConnectedOrderHistory} from './OrderHistory'
 
 /**
  * COMPONENT
@@ -12,9 +13,7 @@ export const UserHome = props => {
   return (
     <div>
       <h3>Welcome, {email}</h3>
-      <Link to="/items" className="button is-primary is-large is-one-third">
-        All Items
-      </Link>
+      <ConnectedOrderHistory />
     </div>
   )
 }
