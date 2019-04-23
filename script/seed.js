@@ -20,6 +20,15 @@ async function seed() {
       dob: faker.date.past()
     }))
 
+  users.push({
+    email: 'DDeez@fakemail.com',
+    firstName: 'Danny',
+    lastName: 'D',
+    password: '12345',
+    address: '123 fake street',
+    phone: '555-666-5555',
+    dob: new Date()
+  })
   await User.bulkCreate(users)
 
   const categories = ['sports', 'food', 'clothes', 'collectables', 'hype']

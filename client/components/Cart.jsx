@@ -1,17 +1,16 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 import history from '../history'
-import { getSelectItem } from '../store/item'
+import {getSelectItem} from '../store/item'
 import {
   getItemsFromCart,
   removeFromCartThunk,
   checkoutCartThunk
 } from '../store/cart'
 
-import { Link } from 'react-router-dom'
-import CartItem from './CartItem';
-import { decimalCleaner } from '../utils';
-
+import {Link} from 'react-router-dom'
+import CartItem from './CartItem'
+import {decimalCleaner} from '../utils'
 
 // function totalPrice(dummyOrderList) {
 //   let result = 0
@@ -50,7 +49,12 @@ export class Cart extends React.Component {
   }
 
   handleCheckout() {
-    this.props.checkout(() => this.props.getItemsFromCart)
+    this.props.checkout(
+      () => this.props.getItemsFromCart,
+      () => {
+        this.props.history.push('/login')
+      }
+    )
   }
 
   totalPrice(items) {
@@ -58,7 +62,7 @@ export class Cart extends React.Component {
     items.forEach(item => {
       result += item.price * item.quantity
     })
-    return result / 100
+    return result
   }
 
   handleIncrement(item) {
@@ -84,15 +88,21 @@ export class Cart extends React.Component {
             {itemsList ? (
               itemsList.map(item => {
                 return (
-                  <CartItem key={item.id} item={item} handleRemoveItem={this.handleRemoveItem} />
+                  <CartItem
+                    key={item.id}
+                    item={item}
+                    handleRemoveItem={this.handleRemoveItem}
+                  />
                 )
               })
             ) : (
-                <p>You're Cart is empty</p>
-              )}
+              <p>Your Cart Is Empty</p>
+            )}
           </ul>
-          <nav className="navbar is-fixed-bottom">
-            <p className="is-size-4 has-text-white has-text-weight-bold">Total Price: {decimalCleaner(this.totalPrice(itemsList))} </p>
+          <nav className="navbar is-fixed-bottom has-text-centered">
+            <p className="is-size-4 has-text-white has-text-weight-bold">
+              Total Price: {decimalCleaner(this.totalPrice(itemsList))}{' '}
+            </p>
             {/* <button
             type="button"
             className="button is-danger"
@@ -102,17 +112,17 @@ export class Cart extends React.Component {
           </button> */}
             <button
               onClick={this.handleCheckout}
-              className="button is-primary"
+              className="button is-white has-text-weight-bold"
               type="button"
             >
               Checkout
-          </button>
+            </button>
             <Link
               to="/items"
               className="button is-warning  is-success is-one-third"
             >
               Keep Shopping
-          </Link>
+            </Link>
           </nav>
         </div>
         <style jsx>
@@ -125,8 +135,13 @@ export class Cart extends React.Component {
             .itemName {
               font-weight: bold;
             }
-            ul{
+            ul {
               margin-bottom: 4rem;
+            }
+            .navbar {
+              display: flex;
+              align-items: center;
+              justify-content: space-around;
             }
           `}
         </style>
@@ -147,7 +162,7 @@ const mapDispatch = dispatch => {
       return dispatch(getItemsFromCart())
     },
     removeItem: itemId => dispatch(removeFromCartThunk(itemId)),
-    checkout: cb => dispatch(checkoutCartThunk(cb))
+    checkout: (cb, redirect) => dispatch(checkoutCartThunk(cb, redirect))
   }
 }
 
