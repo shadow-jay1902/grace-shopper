@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {getOrderHistoryThunk} from '../store/order-history'
 
 import {Link} from 'react-router-dom'
-import CartItem from './CartItem'
+import HistoryItem from './HistoryItem'
 import {decimalCleaner} from '../utils'
 
 export class OrderHistory extends React.Component {
@@ -20,13 +20,17 @@ export class OrderHistory extends React.Component {
     return (
       <div className="main columns is-centered">
         <div className="column has-text-centered is-three-fifths">
-          <div className="title is-2">Cart</div>
+          <div className="title is-2">Previous Orders</div>
           <ul>
-            {orderHistory.length ? (
-              orderHistory.map(order => {
+            {orderHistory ? (
+              orderHistory.filter(order => order.items.length).map(order => {
                 return (
-                  // <CartItem key={item.id} item={item} handleRemoveItem={this.handleRemoveItem} />
-                  <p>Hi mom</p>
+                  <div className="box" key={order.id}>
+                    <p><strong>Ordered On: {order.updatedAt.slice(0, 10)}</strong></p>
+                    {order.items.map(item => {
+                      return <HistoryItem key={item.id} item={item} />
+                    })}
+                  </div>
                 )
               })
             ) : (
@@ -74,7 +78,7 @@ export class OrderHistory extends React.Component {
 
 const mapState = state => {
   return {
-    orderHistory: state.history
+    orderHistory: state.history.history
   }
 }
 

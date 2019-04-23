@@ -252,37 +252,21 @@ router.get('/orderhistory', async (req, res, next) => {
         },
         include: [{model: Item}]
       })
-      // const cart = orders.dataValues
-      // if (cart.items) {
-      //   cart.items = cart.items.map(item => {
-      //     const newItem = item.dataValues
-      //     newItem.quantity = newItem.order_item.dataValues.quantity
-      //     return newItem
-      //   })
-      // } else {
-      //   cart.items = []
-      // }
-      res.json(orders)
+      const orderHistory = orders.map(order => {
+        let singleOrder = order.dataValues
+        if (singleOrder.items) {
+          singleOrder.items = singleOrder.items.map(item => {
+            const newOrder = item.dataValues
+            newOrder.quantity = newOrder.order_item.dataValues.quantity
+
+            return newOrder
+          })
+          return singleOrder
+        }
+      })
+      res.json(orderHistory)
     } else {
-      // const {id} = req.session
-      // const [order] = await Order.findOrCreate({
-      //   where: {
-      //     guestId: id,
-      //     ordered: false
-      //   },
-      //   include: [{model: Item}]
-      // })
-      // const cart = order.dataValues
-      // if (cart.items) {
-      //   cart.items = cart.items.map(item => {
-      //     const newItem = item.dataValues
-      //     newItem.quantity = newItem.order_item.dataValues.quantity
-      //     return newItem
-      //   })
-      // } else {
-      //   cart.items = []
-      // }
-      // res.json(cart)
+      res.sendStatus(200)
     }
   } catch (error) {
     next(error)
