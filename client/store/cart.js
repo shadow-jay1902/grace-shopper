@@ -47,7 +47,7 @@ export const getItemsFromCart = () => async (dispatch, getState) => {
       if (!cart) {
         let newCart = {items: []}
         window.localStorage.setItem('cart', JSON.stringify(newCart))
-        cart = newCart
+        cart = window.localStorage.getItem('cart')
       }
       cart = JSON.parse(cart)
       cart.items = cart.items.map(item => ({...item, price: (item.price * 100)}))
