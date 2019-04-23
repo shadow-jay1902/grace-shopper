@@ -49,7 +49,7 @@ export const getItemsFromCart = () => async (dispatch, getState) => {
         window.localStorage.setItem('cart', JSON.stringify(newCart))
         cart = newCart
       }
-      dispatch(gotItemsFromCart(cart))
+      dispatch(gotItemsFromCart(JSON.parse(cart)))
     }
   } catch (err) {
     console.error(err)

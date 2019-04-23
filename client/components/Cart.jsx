@@ -62,7 +62,7 @@ export class Cart extends React.Component {
 
   totalPrice(items) {
     let result = 0
-    items.forEach(item => {
+    items && items.forEach(item => {
       result += item.price * item.quantity
     })
     return result
@@ -88,7 +88,7 @@ export class Cart extends React.Component {
         <div className="column has-text-centered is-three-fifths">
           <div className="title is-2">Cart</div>
           <ul>
-            {itemsList.length ? (
+            {itemsList && itemsList.length ? (
               itemsList.map(item => {
                 return (
                   <CartItem
