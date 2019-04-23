@@ -34,7 +34,7 @@ export const getItemsFromCart = () => async (dispatch, getState) => {
       if (cart) {
         cart = JSON.parse(cart)
         const requests = []
-        for (let item of cart) {
+        for (let item of cart.items) {
           requests.push(axios.post('/api/cart', item))
         }
         await Promise.all(requests)

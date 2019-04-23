@@ -1,6 +1,6 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { getAllItems, getItemsByCat } from '../store/item'
+import {connect} from 'react-redux'
+import {getAllItems, getItemsByCat} from '../store/item'
 import ItemThumbnail from './ItemThumbnail'
 import history from '../history'
 
@@ -30,7 +30,7 @@ class List extends React.Component {
   }
 
   render() {
-    const { list } = this.props
+    const {list} = this.props
     return (
       <div>
         <div className="title is-2 has-text-centered">LIST OF ITEMS</div>
@@ -69,7 +69,7 @@ class List extends React.Component {
         </div>
         <div className="columns is-centered is-multiline">
           {list.map(item => {
-            return <ItemThumbnail key={item.id} item={item} />
+            return item.stock && <ItemThumbnail key={item.id} item={item} />
           })}
         </div>
       </div>
