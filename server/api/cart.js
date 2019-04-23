@@ -46,25 +46,25 @@ router.get('/', async (req, res, next) => {
       }
       res.json(cart)
     } else {
-      const {id} = req.session
-      const [order] = await Order.findOrCreate({
-        where: {
-          guestId: id,
-          ordered: false
-        },
-        include: [{model: Item}]
-      })
-      const cart = order.dataValues
-      if (cart.items) {
-        cart.items = cart.items.map(item => {
-          const newItem = item.dataValues
-          newItem.quantity = newItem.order_item.dataValues.quantity
-          return newItem
-        })
-      } else {
-        cart.items = []
-      }
-      res.json(cart)
+      // const {id} = req.session
+      // const [order] = await Order.findOrCreate({
+      //   where: {
+      //     guestId: id,
+      //     ordered: false
+      //   },
+      //   include: [{model: Item}]
+      // })
+      // const cart = order.dataValues
+      // if (cart.items) {
+      //   cart.items = cart.items.map(item => {
+      //     const newItem = item.dataValues
+      //     newItem.quantity = newItem.order_item.dataValues.quantity
+      //     return newItem
+      //   })
+      // } else {
+      //   cart.items = []
+      // }
+      // res.json(cart)
     }
   } catch (error) {
     next(error)
@@ -235,6 +235,38 @@ router.post('/newcart', async (req, res, next) => {
         })
       })
       res.status(201).send(rowsToCreate)
+    }
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.get('/orderhistory', async (req, res, next) => {
+  try {
+    if (req.user) {
+      const {dataValues: {id}} = req.user
+      let orders = await Order.findAll({
+        where: {
+          userId: id,
+          ordered: true
+        },
+        include: [{model: Item}]
+      })
+      const orderHistory = orders.map(order => {
+        let singleOrder = order.dataValues
+        if (singleOrder.items) {
+          singleOrder.items = singleOrder.items.map(item => {
+            const newOrder = item.dataValues
+            newOrder.quantity = newOrder.order_item.dataValues.quantity
+
+            return newOrder
+          })
+          return singleOrder
+        }
+      })
+      res.json(orderHistory)
+    } else {
+      res.sendStatus(200)
     }
   } catch (error) {
     next(error)
