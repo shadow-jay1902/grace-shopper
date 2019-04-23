@@ -104,6 +104,8 @@ class Item extends React.Component {
   }
 }
 
+//a new comment
+
 /**
  * CONTAINER
  */
