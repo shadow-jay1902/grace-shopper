@@ -42,9 +42,9 @@ class Routes extends Component {
             <Route path="/home" component={UserHome} />
           </Switch>
         )}
-        <Route path="/" component={AllItems} />
+        {/* <Route path="/" component={AllItems} /> */}
         {/* Displays our Login component as a fallback */}
-        <Route component={Login} />
+        <Route component={AllItems} />
       </Switch>
     )
   }
