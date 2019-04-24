@@ -1,14 +1,11 @@
 const router = require('express').Router()
-const {User, Item, Order, OrderItem} = require('../db/models')
-const db = require('../db')
-const {Op} = require('sequelize')
+const { Item, Order, OrderItem} = require('../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
   try {
     if (req.user) {
       const sessionId = req.session.id
-      //req.session.id is the main issue for guests...
       const {dataValues: {id}} = req.user
       let order = await Order.findOne({
         where: {
@@ -46,25 +43,7 @@ router.get('/', async (req, res, next) => {
       }
       res.json(cart)
     } else {
-      // const {id} = req.session
-      // const [order] = await Order.findOrCreate({
-      //   where: {
-      //     guestId: id,
-      //     ordered: false
-      //   },
-      //   include: [{model: Item}]
-      // })
-      // const cart = order.dataValues
-      // if (cart.items) {
-      //   cart.items = cart.items.map(item => {
-      //     const newItem = item.dataValues
-      //     newItem.quantity = newItem.order_item.dataValues.quantity
-      //     return newItem
-      //   })
-      // } else {
-      //   cart.items = []
-      // }
-      // res.json(cart)
+      res.sendStatus(200)
     }
   } catch (error) {
     next(error)
@@ -88,7 +67,6 @@ router.post('/', async (req, res, next) => {
       const newOrderItem = await OrderItem.create(req.body)
       res.status(201).json(newOrderItem)
     } else {
-      //The below is for guest posting. This will need to be modified...
       const sessionId = req.session.id
       const order = await Order.findOne({
         where: {
@@ -102,9 +80,7 @@ router.post('/', async (req, res, next) => {
         const newOrderItem = await OrderItem.create(req.body)
         res.status(201).json(newOrderItem)
       } else {
-        console.log(
-          'Guest post request still not able to find persistent session...'
-        )
+        res.sendStatus(201)
       }
     }
   } catch (error) {
