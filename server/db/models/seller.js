@@ -42,4 +42,5 @@ const Seller = db.define('sellers', {
 })
 
 Seller.defaultPhoto = defaultPhoto
+
 module.exports = Seller

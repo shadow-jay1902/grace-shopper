@@ -8,18 +8,13 @@ class Navbar extends Component {
   state = {
     menu: false
   }
+
   toggleMenu = () => {
     this.setState({
       menu: !this.state.menu
     })
   }
-  handleItemsClick() {
-    console.log('you clicked all items!')
-  }
 
-  componentDidMount() {
-    console.log(this.props.match)
-  }
   render() {
     return (
       <nav
@@ -35,7 +30,7 @@ class Navbar extends Component {
           <div className="navbar-item">
             <Link className="button is-info" to="/items">
               View Products
-        </Link>
+            </Link>
           </div>
 
           <a
@@ -77,7 +72,7 @@ class Navbar extends Component {
                       </Link>
                       <Link to="/signup" className="button is-light">
                         Sign Up
-                    </Link>
+                      </Link>
                     </>
                   )}
               </div>
@@ -90,24 +85,12 @@ class Navbar extends Component {
             position: relative;
             left: 1rem;
           }
-           {
-            /* {
-            .allItemButtonContainer {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-            }
-          } */
-          }
         `}</style>
       </nav>
     )
   }
 }
 
-/**
- * CONTAINER
- */
 const mapState = state => {
   return {
     isLoggedIn: !!state.user.id
@@ -124,9 +107,6 @@ const mapDispatch = dispatch => {
 
 export default connect(mapState, mapDispatch)(Navbar)
 
-/**
- * PROP TYPES
- */
 Navbar.propTypes = {
   handleClick: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired

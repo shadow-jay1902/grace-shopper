@@ -1,7 +1,6 @@
 const request = require('supertest');
 const { expect } = require('chai');
 const app = require('../index');
-const User = require('../db/models/user');
 const db = require('../db');
 const Utils = require('../testUtils')
 let agent;
@@ -60,15 +59,3 @@ describe('Signup', () => {
       .end(done)
   })
 })
-
-// describe('Logout', () => {
-//   it('should logout a logged in user', async () => {
-//     await Utils.signup(agent, codyInfo)
-//     await agent.post('/auth/logout')
-//       .send()
-//       .expect(204)
-
-//     await agent.get('/auth/me')
-//       .expect(403)
-//   })
-// })

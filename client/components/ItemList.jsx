@@ -8,18 +8,18 @@ class List extends React.Component {
   constructor() {
     super()
   }
+
   componentDidMount() {
     this.props.loadAllItems()
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     if (nextProps !== this.props) {
       return true
     }
   }
 
   handleClick(event) {
-    // this.setState({category: event.target.value})
     if (event.target.value === 'all') {
       this.props.loadAllItems()
       history.push('/items')
@@ -112,16 +112,13 @@ class List extends React.Component {
   }
 }
 
-/**
- * CONTAINER
- */
 const mapState = state => {
   return {
     list: state.list
   }
 }
 
-const mapDispatch = (dispatch, ownProps) => {
+const mapDispatch = (dispatch) => {
   return {
     loadAllItems: () => {
       return dispatch(getAllItems())

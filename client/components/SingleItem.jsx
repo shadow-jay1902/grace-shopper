@@ -13,6 +13,7 @@ class Item extends React.Component {
     }
     this.handleAdd = this.handleAdd.bind(this)
   }
+
   componentDidMount() {
     this.props.loadSingleItem()
   }
@@ -23,6 +24,7 @@ class Item extends React.Component {
       added: true
     })
   }
+
   render() {
     const {item} = this.props
     return (
@@ -60,13 +62,6 @@ class Item extends React.Component {
                   </button>
                 )}
 
-                {/* <button
-                  className="button is-small is-info is-rounded"
-                  item={item}
-                  onClick={event => this.handleAdd(event)}
-                >
-                  ADD TO CART
-                </button> */}
               </div>
               <div className="column has-text-centered is-half">
                 <div className="is-large is-success is-size-5">
@@ -105,11 +100,6 @@ class Item extends React.Component {
   }
 }
 
-//a new comment
-
-/**
- * CONTAINER
- */
 const mapState = state => {
   return {
     item: state.item

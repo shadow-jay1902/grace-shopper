@@ -1,51 +1,28 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import history from '../history'
-import {getSelectItem} from '../store/item'
 import {
   getItemsFromCart,
   removeFromCartThunk,
   checkoutCartThunk
 } from '../store/cart'
-
 import {Link} from 'react-router-dom'
 import CartItem from './CartItem'
 import {decimalCleaner} from '../utils'
-
-// function totalPrice(dummyOrderList) {
-//   let result = 0
-//   dummyOrderList.forEach(item => {
-//     result += item.price * item.quantity
-//   })
-//   return result
-// }
 
 export class Cart extends React.Component {
   constructor(props) {
     super(props)
     this.handleCheckout = this.handleCheckout.bind(this)
     this.handleRemoveItem = this.handleRemoveItem.bind(this)
-    this.handleEmptyCart = this.handleEmptyCart.bind(this)
-    // this.handleCheckout = this.handleCheckout.bind(this)
     this.totalPrice = this.totalPrice.bind(this)
-    this.handleIncrement = this.handleIncrement.bind(this)
-    this.handleDecrement = this.handleDecrement.bind(this)
   }
 
   componentDidMount() {
     this.props.loadCart()
   }
 
-  // handleCheckout(event) {
-  //   console.log('you clicked checkout!')
-  // }
-
   handleRemoveItem(id) {
     this.props.removeItem(id)
-  }
-
-  handleEmptyCart() {
-    console.log('clicked empty cart')
   }
 
   handleCheckout() {
@@ -68,20 +45,7 @@ export class Cart extends React.Component {
     return result
   }
 
-  handleIncrement(item) {
-    console.log('clicked increment')
-    console.log('Before: ', item.quantity)
-    item.quantity++
-    console.log('After: ', item.quantity)
-    // this.props.loadCart()
-  }
-
-  handleDecrement() {
-    // console.log('clicked decrement')
-  }
-
   render() {
-    console.log('inside of render', this.props.items)
     const itemsList = this.props.items
     return (
       <div className="main columns is-centered">
@@ -106,13 +70,6 @@ export class Cart extends React.Component {
             <p className="is-size-4 has-text-white has-text-weight-bold">
               Total Price: ${decimalCleaner(this.totalPrice(itemsList))}{' '}
             </p>
-            {/* <button
-            type="button"
-            className="button is-danger"
-            onClick={this.handleEmptyCart}
-          >
-            Empty Cart
-          </button> */}
             <button
               onClick={this.handleCheckout}
               className="button is-white has-text-weight-bold"
