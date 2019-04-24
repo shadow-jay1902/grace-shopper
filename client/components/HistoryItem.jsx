@@ -9,6 +9,7 @@ class CartItem extends Component {
     isEditing: false,
     quantity: 0
   }
+
   handleChange(val) {
     const {item} = this.props
     let newVal = !this.state.quantity
@@ -20,6 +21,7 @@ class CartItem extends Component {
       quantity
     })
   }
+
   handleEdit() {
     if (!this.state.isEditing) {
       this.setState({isEditing: true})
@@ -32,6 +34,7 @@ class CartItem extends Component {
       })
     }
   }
+
   render() {
     const {item} = this.props
     return (

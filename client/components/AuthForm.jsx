@@ -1,15 +1,12 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import PropTypes from 'prop-types'
 import {login, signup} from '../store'
 
-/**
- * COMPONENT
- */
 class AuthForm extends React.Component {
   state = {
     errors: {}
   }
+
   componentDidMount() {
     for (let field of this.props.fields) {
       this.setState({
@@ -19,6 +16,7 @@ class AuthForm extends React.Component {
       })
     }
   }
+
   formSubmit = e => {
     e.preventDefault()
     let flag = false
@@ -40,6 +38,7 @@ class AuthForm extends React.Component {
     if (flag) return true
     this.props.handleSubmit(values)
   }
+
   renderInput = (name, type = 'text', i) => {
     return (
       <div key={i} className="field">
@@ -68,6 +67,7 @@ class AuthForm extends React.Component {
       </div>
     )
   }
+
   render() {
     const {formName, displayName, error, fields} = this.props
     return (
@@ -94,7 +94,6 @@ class AuthForm extends React.Component {
               </button>
             </div>
           </form>
-          {/* {formName === 'login' && <a href="/auth/google">Login with Google</a>} */}
         </div>
         <style jsx>{`
           .column {
@@ -106,13 +105,6 @@ class AuthForm extends React.Component {
   }
 }
 
-/**
- * CONTAINER
- *   Note that we have two different sets of 'mapStateToProps' functions -
- *   one for Login, and one for Signup. However, they share the same 'mapDispatchToProps'
- *   function, and share the same Component. This is a good example of how we
- *   can stay DRY with interfaces that are very similar to each other!
- */
 const mapLogin = state => {
   return {
     formName: 'login',
@@ -130,6 +122,7 @@ const mapLogin = state => {
     ]
   }
 }
+
 const mapSignup = state => {
   return {
     formName: 'signup',
@@ -172,6 +165,7 @@ const mapDispatchLogin = dispatch => {
     }
   }
 }
+
 const mapDispatchSignup = dispatch => {
   return {
     handleSubmit(values) {
@@ -182,13 +176,3 @@ const mapDispatchSignup = dispatch => {
 
 export const Login = connect(mapLogin, mapDispatchLogin)(AuthForm)
 export const Signup = connect(mapSignup, mapDispatchSignup)(AuthForm)
-
-/**
- * PROP TYPES
- */
-// Login.propTypes = {
-//   name: PropTypes.string.isRequired,
-//   displayName: PropTypes.string.isRequired,
-//   handleSubmit: PropTypes.func.isRequired,
-//   error: PropTypes.object
-// }

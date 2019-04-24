@@ -1,32 +1,16 @@
 import axios from 'axios'
-import history from '../history'
 
-/**
- * ACTION TYPES
- */
 const SET_SELECT_ITEM = 'SET_SELECT_ITEM'
 const SET_ITEM_LIST = 'SET_ITEM_LIST'
-
-/**
- * INITIAL STATE
- */
-
 
 const defaultItem = {}
 const defaultList = []
 
-/**
- * ACTION CREATORS
- */
 const setSelectItem = item => ({type: SET_SELECT_ITEM, item})
 const setItemList = list => ({type: SET_ITEM_LIST, list})
 
-/**
- * THUNK CREATORS
- */
 export const getSelectItem = id => async dispatch => {
   try {
-    console.log("Start of thunk. Item")
     const res = await axios.get(`/api/items/${id}`)
     dispatch(setSelectItem(res.data))
   } catch (err) {
@@ -51,10 +35,6 @@ export const getItemsByCat = cat => async dispatch => {
     console.error(err)
   }
 }
-
-/**
- * REDUCER
- */
 
 export const singleItemReducer = function(state = defaultItem, action) {
   switch (action.type) {

@@ -3,7 +3,6 @@ const Seller = require('../db/models')
 
 router.get('/', async (req, res, next) => {
   try {
-    console.log(Seller)
     const sellers = await Seller.findAll()
     res.json(sellers)
   } catch (err) {

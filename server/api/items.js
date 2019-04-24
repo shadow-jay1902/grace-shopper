@@ -30,31 +30,15 @@ router.get('/:id', async (req, res, next) => {
     const singleItem = await Item.findByPk(ID)
     res.json(singleItem)
   } catch (error) {
-    console.log('no item')
     next(error)
   }
 })
 
 router.post('/', async (req, res, next) => {
   try {
-    // console.log('REQ.BODYYYY: ', req.body)
     const newItem = await Item.create(req.body)
     res.status(204).json(newItem)
   } catch (error) {
     next(error)
   }
 })
-
-// router.delete('/:id', async (req, res, next) => {
-//   try {
-//     const id = Number(req.params.id)
-//     await Item.destroy({
-//       where: {
-//         id
-//       }
-//     })
-//     res.sendStatus(202)
-//   } catch (error) {
-//     next(error)
-//   }
-// })

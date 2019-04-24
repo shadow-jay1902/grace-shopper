@@ -1,5 +1,4 @@
 import axios from 'axios'
-import {request} from 'https'
 
 const GOT_ITEMS_FROM_CART = 'GOT_ITEMS_FROM_CART'
 const SET_ITEM_ONTO_CART = 'SET_ITEM_ONTO_CART'
@@ -132,7 +131,6 @@ export const checkoutCartThunk = (cb, redirect) => async (
   getState
 ) => {
   try {
-    console.log('REDIRECT: ', redirect)
     if (getState().user.id) {
       await axios.put('/api/cart/checkout')
       dispatch(checkoutCart())
@@ -160,7 +158,6 @@ export const cartReducer = function(state = initialState, action) {
     case CHECKOUT_CART:
       return initialState
     case EDIT_CART:
-      console.log(action.quantity)
       return {
         ...state,
         items: state.items.map(

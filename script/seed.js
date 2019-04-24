@@ -29,6 +29,7 @@ async function seed() {
     phone: '555-666-5555',
     dob: new Date()
   })
+
   await User.bulkCreate(users)
 
   const categories = ['sports', 'food', 'clothes', 'collectables', 'hype']

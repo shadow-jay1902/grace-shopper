@@ -106,6 +106,5 @@ describe('Item model', () => {
       let retrievedItem = await Item.findOne({ where: { name: 'baseball' } })
       expect(retrievedItem.photoURLs[0]).to.equal('https://en.wikipedia.org/wiki/File:Baseball_(crop).jpg')
     })
-    //Later on, we should make a test to confirm sellerID belongs to an exitsing seller
   })
 }) // end describe('User model')

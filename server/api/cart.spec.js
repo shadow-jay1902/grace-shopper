@@ -1,10 +1,7 @@
 const request = require('supertest')
 const {expect} = require('chai')
 const app = require('../index')
-const User = require('../db/models/user')
-const Order = require('../db/models/order')
 const Item = require('../db/models/item')
-const OrderItem = require('../db/models/order_item')
 const db = require('../db')
 const Utils = require('../testUtils')
 let agent

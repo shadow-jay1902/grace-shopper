@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {getOrderHistoryThunk, orderHistoryReducer} from '../store/order-history'
+import {getOrderHistoryThunk} from '../store/order-history'
 
 import {Link} from 'react-router-dom'
 import HistoryItem from './HistoryItem'
@@ -17,6 +17,7 @@ export class OrderHistory extends React.Component {
 
   render() {
     let {orderHistory} = this.props
+
     if (orderHistory) {
       orderHistory = orderHistory
         .filter(order => order.items.length)
@@ -30,6 +31,7 @@ export class OrderHistory extends React.Component {
           }
         })
     }
+
     return (
       <div className="main columns is-centered">
         <div className="column has-text-centered is-three-fifths">
@@ -65,16 +67,6 @@ export class OrderHistory extends React.Component {
             )}
           </ul>
           <nav className="navbar is-fixed-bottom">
-            {/* <p className="is-size-4 has-text-white has-text-weight-bold">
-              Total Price: {decimalCleaner(this.totalPrice(itemsList))}{' '}
-            </p> */}
-            {/* <button
-            type="button"
-            className="button is-danger"
-            onClick={this.handleEmptyCart}
-          >
-            Empty Cart
-          </button> */}
             <Link
               to="/items"
               className="button is-warning  is-success is-one-third"
@@ -122,6 +114,7 @@ const mapDispatch = dispatch => {
     }
   }
 }
+
 export const ConnectedOrderHistory = connect(mapState, mapDispatch)(
   OrderHistory
 )

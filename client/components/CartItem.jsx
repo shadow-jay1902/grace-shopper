@@ -9,6 +9,7 @@ class CartItem extends Component {
     isEditing: false,
     quantity: 0
   }
+
   handleChange(val) {
     const {item} = this.props
     let newVal = !this.state.quantity
@@ -20,6 +21,7 @@ class CartItem extends Component {
       quantity
     })
   }
+
   handleEdit() {
     if (!this.state.isEditing) {
       this.setState({isEditing: true})
@@ -32,9 +34,9 @@ class CartItem extends Component {
       })
     }
   }
+
   render() {
     const {item} = this.props
-    console.log('ITEM!: ', item)
     return (
       <div className="card">
         <header className="card-header">
@@ -43,11 +45,6 @@ class CartItem extends Component {
               <li className="itemName">{item.name}</li>
             </Link>
           </p>
-          {/* <a href="#" className="card-header-icon" aria-label="more options">
-                        <span className="icon">
-                            <i className="fas fa-angle-down" aria-hidden="true"></i>
-                        </span>
-                    </a> */}
           <p className="card-header-icon">
             <strong>
               Price:{' '}$
