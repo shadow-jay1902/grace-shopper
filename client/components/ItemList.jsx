@@ -50,46 +50,46 @@ class List extends React.Component {
               <input
                 type="radio"
                 name="category"
-                value="sports"
+                value="javascript"
                 onClick={event => this.handleClick(event)}
               />{' '}
-              Sports{' '}
+              JavaScript{' '}
             </label>
             <label className="radio">
               <input
                 type="radio"
                 name="category"
-                value="food"
+                value="other languages"
                 onClick={event => this.handleClick(event)}
               />{' '}
-              Food{' '}
+              Other Languages{' '}
             </label>
             <label className="radio">
               <input
                 type="radio"
                 name="category"
-                value="clothes"
+                value="frontend"
                 onClick={event => this.handleClick(event)}
               />{' '}
-              Clothes{' '}
+              Front End{' '}
             </label>
             <label className="radio">
               <input
                 type="radio"
                 name="category"
-                value="collectables"
+                value="backend"
                 onClick={event => this.handleClick(event)}
               />{' '}
-              Collectables{' '}
+              Back End{' '}
             </label>
             <label className="radio">
               <input
                 type="radio"
                 name="category"
-                value="hype"
+                value="git"
                 onClick={event => this.handleClick(event)}
               />{' '}
-              Hype{' '}
+              Git{' '}
             </label>
             <label className="radio">
               <input
@@ -118,7 +118,7 @@ const mapState = state => {
   }
 }
 
-const mapDispatch = (dispatch) => {
+const mapDispatch = dispatch => {
   return {
     loadAllItems: () => {
       return dispatch(getAllItems())

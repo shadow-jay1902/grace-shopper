@@ -32,7 +32,7 @@ class Navbar extends Component {
               View Products
             </Link>
           </div>
-
+          <div className="title"><strong>The Gallery of VAR-ious Programming Memes</strong></div>
           <a
             onClick={this.toggleMenu}
             role="button"
@@ -84,6 +84,9 @@ class Navbar extends Component {
             transform: scale(2, 2);
             position: relative;
             left: 1rem;
+          }
+          .title {
+            font-size: 30px;
           }
         `}</style>
       </nav>
